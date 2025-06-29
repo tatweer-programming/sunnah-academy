@@ -1,7 +1,6 @@
+import 'package:sunnah_academy/src/core/error/exception_manager.dart';
 import 'package:sunnah_academy/src/core/utils/assets_manager.dart'
     show AssetsManager;
-import 'package:sunnah_academy/src/error/exception_manager.dart'
-    show ExceptionHandler;
 
 class UnexpectedExceptionHandler implements ExceptionHandler {
   @override

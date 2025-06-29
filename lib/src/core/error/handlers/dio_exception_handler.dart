@@ -1,7 +1,8 @@
 import 'package:dio/dio.dart';
-import 'package:sunnah_academy/src/error/exception_manager.dart';
-
-import '../../core/utils/assets_manager.dart' show AssetsManager;
+import 'package:sunnah_academy/src/core/error/exception_manager.dart'
+    show ExceptionHandler;
+import 'package:sunnah_academy/src/core/utils/assets_manager.dart'
+    show AssetsManager;
 
 class DioExceptionHandler implements ExceptionHandler {
   @override

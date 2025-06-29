@@ -2,9 +2,10 @@ import 'dart:developer';
 
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart' show SystemChrome, DeviceOrientation;
-import 'package:sunnah_academy/src/apis/api.dart';
-import 'package:sunnah_academy/src/apis/dio_helper.dart';
-import 'package:sunnah_academy/src/services/dep_injection.dart';
+import 'package:sunnah_academy/src/core/apis/api.dart' show ApiManager;
+import 'package:sunnah_academy/src/core/apis/dio_helper.dart';
+import 'package:sunnah_academy/src/core/services/dep_injection.dart'
+    show ServiceLocator;
 
 class AppInitializer {
   static bool? _isFirstRun;

@@ -1,6 +1,6 @@
+import 'package:sunnah_academy/src/core/error/custom_exceptions/auth_exceptions.dart';
+import 'package:sunnah_academy/src/core/error/exception_manager.dart';
 import 'package:sunnah_academy/src/core/utils/assets_manager.dart';
-import 'package:sunnah_academy/src/error/custom_exceptions/auth_exceptions.dart';
-import 'package:sunnah_academy/src/error/exception_manager.dart';
 
 class AuthExceptionHandler implements ExceptionHandler {
   @override
