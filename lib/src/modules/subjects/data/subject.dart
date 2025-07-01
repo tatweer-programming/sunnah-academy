@@ -25,7 +25,8 @@ class Subject extends Equatable {
       description: json['description'],
       imageUrl: json['imageUrl'],
       progress: json['progress'],
-      completionCondition: json['completionCondition'],
+      completionCondition:
+          CompletionCondition.fromJson(json['completionCondition']),
     );
   }
 

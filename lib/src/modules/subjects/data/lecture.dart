@@ -21,7 +21,8 @@ class Lecture extends Equatable {
       title: json['title'],
       url: json['url'],
       contentType: json['contentType'],
-      completionCondition: json['completionCondition'],
+      completionCondition:
+          CompletionCondition.fromJson(json['completionCondition']),
     );
   }
   void markAsCompleted() {

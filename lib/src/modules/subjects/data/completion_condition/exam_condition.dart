@@ -3,5 +3,13 @@ import 'package:sunnah_academy/src/modules/subjects/data/completion_condition/co
 final class ExamCondition extends CompletionCondition {
   final String examId;
 
-  const ExamCondition({required this.examId, required super.type});
+  ExamCondition({required this.examId}) : super(type: 'exam');
+
+  factory ExamCondition.fromJson(Map<String, dynamic> json) {
+    return ExamCondition(examId: json['examId']);
+  }
+
+  static void register() {
+    CompletionCondition.register('exam', ExamCondition.fromJson);
+  }
 }
