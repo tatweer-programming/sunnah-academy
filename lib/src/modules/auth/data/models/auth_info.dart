@@ -2,7 +2,7 @@ class AuthInfo {
   final String id;
   final String token;
 
-  AuthInfo({
+  const AuthInfo({
     required this.id,
     required this.token,
   });

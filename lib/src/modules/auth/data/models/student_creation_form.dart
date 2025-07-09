@@ -1,11 +1,11 @@
 class StudentCreationForm {
-  String name;
-  String email;
-  String password;
-  String phoneNumber;
+  final String name;
+  final String email;
+  final String password;
+  final String phoneNumber;
   final String gender;
-  String birthDate;
-  StudentCreationForm(
+  final String birthDate;
+  const StudentCreationForm(
       {required this.name,
       required this.email,
       required this.password,
