@@ -32,6 +32,18 @@ class AuthRepository {
     );
   }
 
+  Future<Either<Exception, Unit>> resetPassword(
+      String newPassword, String oldPassword) async {
+    var remoteResult =
+        await _authRemoteServices.resetPassword(newPassword, oldPassword);
+    return remoteResult.fold(
+      (exception) => Left(exception),
+      (success) async {
+        return const Right(unit);
+      },
+    );
+  }
+
   // Example method for user logout
   Future<Either<Exception, Unit>> logout() async {
     // Clear local authentication data
