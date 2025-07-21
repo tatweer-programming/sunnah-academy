@@ -23,19 +23,6 @@ class DioHelper {
               (status >= 200 && status < 300 || status == 304)),
     );
     // customization
-    dio.interceptors.add(PrettyDioLogger(
-        request: true,
-        requestHeader: true,
-        requestBody: true,
-        responseBody: true,
-        responseHeader: false,
-        error: true,
-        compact: true,
-        maxWidth: 90,
-        enabled: kDebugMode,
-        filter: (options, args) {
-          return !args.isResponse || !args.hasUint8ListData;
-        }));
   }
 
   static Future<Response> getData({
@@ -126,4 +113,20 @@ class DioHelper {
   static void setToken(String token) {
     dio.options.headers["Authorization"] = "Bearer $token";
   }
-} /**/
+
+  static void addLogger() {
+    dio.interceptors.add(PrettyDioLogger(
+        request: true,
+        requestHeader: true,
+        requestBody: true,
+        responseBody: true,
+        responseHeader: false,
+        error: true,
+        compact: true,
+        maxWidth: 90,
+        enabled: kDebugMode,
+        filter: (options, args) {
+          return !args.isResponse || !args.hasUint8ListData;
+        }));
+  }
+}
