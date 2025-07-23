@@ -7,6 +7,9 @@ import 'package:sunnah_academy/src/core/apis/dio_helper.dart';
 import 'package:sunnah_academy/src/core/services/dep_injection.dart'
     show ServiceLocator;
 
+import '../../modules/auth/ui/screens/login_screen.dart';
+import '../debugging/app_logger.dart';
+
 class AppInitializer {
   static bool? _isFirstRun;
   static void initializeServiceLocator() {
@@ -17,11 +20,14 @@ class AppInitializer {
     SystemChrome.setPreferredOrientations(
         [DeviceOrientation.portraitUp, DeviceOrientation.portraitDown]);
     DioHelper.init();
+
+    AppLogger.init();
     await _getSavedData();
     if (ApiManager.authToken != null) {
       DioHelper.setToken(ApiManager.authToken!);
+      return Container();
     }
-    return Container();
+    return LoginScreen();
   }
 
   static Future<void> _getSavedData() async {

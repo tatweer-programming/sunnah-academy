@@ -2,6 +2,7 @@ import 'package:get_it/get_it.dart';
 import 'package:sunnah_academy/src/modules/auth/data/repositories/auth_repository.dart';
 import 'package:sunnah_academy/src/modules/auth/data/services/auth_remote_services.dart';
 
+import '../../modules/auth/cubit/auth_cubit.dart';
 import '../../modules/auth/data/services/auth_local_services.dart';
 
 final sl = GetIt.instance;
@@ -11,6 +12,7 @@ class ServiceLocator {
     _initializeRemoteServices();
     _initializeLocalServices();
     _initializeRepositories();
+    _initializeBlocs();
   }
 
   static void _initializeRemoteServices() {
@@ -24,5 +26,9 @@ class ServiceLocator {
   static void _initializeRepositories() {
     sl.registerLazySingleton(() =>
         AuthRepository(sl<AuthRemoteServices>(), sl<AuthLocalServices>()));
+  }
+
+  static void _initializeBlocs() {
+    sl.registerFactory(() => AuthCubit(sl<AuthRepository>()));
   }
 }
