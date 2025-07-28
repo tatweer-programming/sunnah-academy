@@ -20,6 +20,10 @@ class StudentCreationForm {
       "phoneNumber": phoneNumber,
       "gender": gender,
       "birthDate": birthDate,
+      "userName": email.split('@')[0],
     };
   }
 }
+/*
+
+ */

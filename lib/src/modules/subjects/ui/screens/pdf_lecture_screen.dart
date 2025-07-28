@@ -4,10 +4,8 @@ import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_pdfview/flutter_pdfview.dart';
-import 'package:http/http.dart' as http;
-import 'package:path_provider/path_provider.dart';
-import 'package:sunnah_academy/src/modules/subjects/data/models/lecture.dart';
 
+import '../../data/models/lecture.dart' show Lecture;
 import '../widgets/completion_button.dart';
 import '../widgets/lecture_header.dart';
 
@@ -36,37 +34,7 @@ class _PdfLectureScreenState extends State<PdfLectureScreen> {
     _downloadAndLoadPdf();
   }
 
-  Future<void> _downloadAndLoadPdf() async {
-    try {
-      setState(() {
-        _isPdfLoading = true;
-        _error = null;
-      });
-
-      // تحميل ملف PDF من الرابط
-      final response = await http.get(Uri.parse(widget.lecture.contentUrl));
-
-      if (response.statusCode != 200) {
-        throw Exception('فشل في تحميل الملف');
-      }
-
-      // حفظ الملف محلياً
-      final bytes = response.bodyBytes;
-      final dir = await getTemporaryDirectory();
-      final file = File('${dir.path}/lecture_${widget.lecture.id}.pdf');
-      await file.writeAsBytes(bytes);
-
-      setState(() {
-        _localPdfPath = file.path;
-        _isPdfLoading = false;
-      });
-    } catch (e) {
-      setState(() {
-        _error = 'خطأ في تحميل الملف: $e';
-        _isPdfLoading = false;
-      });
-    }
-  }
+  Future<void> _downloadAndLoadPdf() async {}
 
   Future<void> _markAsCompleted() async {
     setState(() {

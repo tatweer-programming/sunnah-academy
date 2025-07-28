@@ -4,6 +4,7 @@ import 'package:sunnah_academy/src/core/error/custom_exceptions/auth_exceptions.
 import 'package:sunnah_academy/src/core/error/handlers/auth_exception_handler.dart';
 import 'package:sunnah_academy/src/core/error/handlers/dio_exception_handler.dart';
 import 'package:sunnah_academy/src/core/error/handlers/unexpected_exception_handler.dart';
+import 'package:sunnah_academy/src/core/utils/assets_manager.dart';
 
 abstract class ExceptionHandler {
   String handle(Exception exception);
@@ -29,6 +30,7 @@ class ExceptionManager {
 
   static void showMessage(Exception exception) {
     Fluttertoast.showToast(
+      fontAsset: AssetsManager.logo,
       msg: getMessage(exception),
     );
   }

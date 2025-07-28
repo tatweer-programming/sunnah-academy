@@ -3,14 +3,14 @@ import 'package:sunnah_academy/src/modules/subjects/data/completion_condition/co
 
 class Lecture extends Equatable {
   final String id;
-  final String title;
+  final String name;
   final String url;
   final String contentType;
   final CompletionCondition completionCondition;
-  bool isComplete;
-  Lecture(
+  final bool isComplete;
+  const Lecture(
       {required this.id,
-      required this.title,
+      required this.name,
       required this.url,
       required this.contentType,
       required this.completionCondition,
@@ -18,17 +18,14 @@ class Lecture extends Equatable {
   factory Lecture.fromJson(Map<String, dynamic> json) {
     return Lecture(
       id: json['id'],
-      title: json['title'],
+      name: json['title'],
       url: json['url'],
       contentType: json['contentType'],
       completionCondition:
           CompletionCondition.fromJson(json['completionCondition']),
     );
   }
-  void markAsCompleted() {
-    isComplete = true;
-  }
 
   @override
-  List<Object?> get props => [id, title, url, contentType];
+  List<Object?> get props => [id, name, url, contentType];
 }

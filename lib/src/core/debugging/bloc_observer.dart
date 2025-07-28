@@ -2,6 +2,8 @@ import 'package:bloc/bloc.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:sunnah_academy/src/core/debugging/loggable.dart';
 
+import '../services/dep_injection.dart';
+
 class MyBlocObserver extends BlocObserver {
   @override
   void onCreate(BlocBase bloc) {
@@ -25,6 +27,7 @@ class MyBlocObserver extends BlocObserver {
 
   @override
   void onClose(BlocBase bloc) {
+    sl.dropScope(bloc.runtimeType.toString());
     super.onClose(bloc);
     debugPrint('---------------BlocClose: ${bloc.runtimeType}');
   }

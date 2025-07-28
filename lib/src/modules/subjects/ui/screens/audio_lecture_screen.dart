@@ -1,8 +1,8 @@
 // lib/src/modules/subjects/presentation/screens/audio_lecture_screen.dart
 import 'package:audioplayers/audioplayers.dart';
 import 'package:flutter/material.dart';
-import 'package:sunnah_academy/src/modules/subjects/data/models/lecture.dart';
 
+import '../../data/models/lecture.dart';
 import '../widgets/completion_button.dart';
 import '../widgets/lecture_header.dart';
 
@@ -65,7 +65,7 @@ class _AudioLectureScreenState extends State<AudioLectureScreen> {
       if (_isPlaying) {
         await _audioPlayer!.pause();
       } else {
-        await _audioPlayer!.play(UrlSource(widget.lecture.contentUrl));
+        await _audioPlayer!.play(UrlSource(widget.lecture.url));
         await _audioPlayer!.setPlaybackRate(_playbackRate);
       }
     } catch (e) {

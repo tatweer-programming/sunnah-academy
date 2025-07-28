@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 
-class DatePickerField extends StatelessWidget {
+class DatePickerField extends StatefulWidget {
   final String label;
   final String? hint;
   final IconData? prefixIcon;
@@ -26,19 +26,50 @@ class DatePickerField extends StatelessWidget {
   });
 
   @override
+  State<DatePickerField> createState() => _DatePickerFieldState();
+}
+
+class _DatePickerFieldState extends State<DatePickerField> {
+  late final TextEditingController _controller;
+
+  @override
+  void initState() {
+    super.initState();
+    _controller = TextEditingController();
+    _updateControllerText();
+  }
+
+  @override
+  void didUpdateWidget(DatePickerField oldWidget) {
+    super.didUpdateWidget(oldWidget);
+    if (oldWidget.selectedDate != widget.selectedDate) {
+      _updateControllerText();
+    }
+  }
+
+  void _updateControllerText() {
+    if (widget.selectedDate != null) {
+      _controller.text = DateFormat('yyyy-MM-dd').format(widget.selectedDate!);
+    } else {
+      _controller.clear();
+    }
+  }
+
+  @override
+  void dispose() {
+    _controller.dispose();
+    super.dispose();
+  }
+
+  @override
   Widget build(BuildContext context) {
     final theme = Theme.of(context);
-    final TextEditingController controller = TextEditingController();
-
-    if (selectedDate != null) {
-      controller.text = DateFormat('yyyy-MM-dd').format(selectedDate!);
-    }
 
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
         Text(
-          label,
+          widget.label,
           style: theme.textTheme.titleSmall?.copyWith(
             color: theme.colorScheme.onSurface,
             fontWeight: FontWeight.w600,
@@ -46,16 +77,16 @@ class DatePickerField extends StatelessWidget {
         ),
         const SizedBox(height: 8),
         TextFormField(
-          controller: controller,
+          controller: _controller,
           readOnly: true,
-          enabled: enabled,
-          validator: validator,
+          enabled: widget.enabled,
+          validator: widget.validator,
           style: theme.textTheme.bodyMedium,
           decoration: InputDecoration(
-            hintText: hint,
-            prefixIcon: prefixIcon != null
+            hintText: widget.hint,
+            prefixIcon: widget.prefixIcon != null
                 ? Icon(
-                    prefixIcon,
+                    widget.prefixIcon,
                     color: theme.iconTheme.color,
                   )
                 : null,
@@ -64,13 +95,40 @@ class DatePickerField extends StatelessWidget {
               color: theme.iconTheme.color,
             ),
           ),
-          onTap: enabled
+          onTap: widget.enabled
               ? () async {
+                  final DateTime firstDate = widget.firstDate ?? DateTime(1940);
+                  final DateTime lastDate = widget.lastDate ?? DateTime.now();
+
+                  if (firstDate.isAfter(lastDate)) {
+                    return;
+                  }
+
+                  DateTime initialDate;
+                  if (widget.selectedDate != null) {
+                    if (widget.selectedDate!.isBefore(firstDate)) {
+                      initialDate = firstDate;
+                    } else if (widget.selectedDate!.isAfter(lastDate)) {
+                      initialDate = lastDate;
+                    } else {
+                      initialDate = widget.selectedDate!;
+                    }
+                  } else {
+                    final now = DateTime.now();
+                    if (now.isBefore(firstDate)) {
+                      initialDate = firstDate;
+                    } else if (now.isAfter(lastDate)) {
+                      initialDate = lastDate;
+                    } else {
+                      initialDate = now;
+                    }
+                  }
+
                   final DateTime? picked = await showDatePicker(
                     context: context,
-                    initialDate: selectedDate ?? DateTime.now(),
-                    firstDate: firstDate ?? DateTime(1900),
-                    lastDate: lastDate ?? DateTime.now(),
+                    initialDate: initialDate,
+                    firstDate: firstDate,
+                    lastDate: lastDate,
                     builder: (context, child) {
                       return Theme(
                         data: theme.copyWith(
@@ -85,8 +143,8 @@ class DatePickerField extends StatelessWidget {
                       );
                     },
                   );
-                  if (picked != null && onDateSelected != null) {
-                    onDateSelected!(picked);
+                  if (picked != null && widget.onDateSelected != null) {
+                    widget.onDateSelected!(picked);
                   }
                 }
               : null,

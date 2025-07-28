@@ -29,6 +29,6 @@ class ServiceLocator {
   }
 
   static void _initializeBlocs() {
-    sl.registerFactory(() => AuthCubit(sl<AuthRepository>()));
+    sl.registerCachedFactory(() => AuthCubit(sl<AuthRepository>()));
   }
 }

@@ -1,8 +1,8 @@
 import 'package:chewie/chewie.dart';
 import 'package:flutter/material.dart';
-import 'package:sunnah_academy/src/modules/subjects/data/models/lecture.dart';
 import 'package:video_player/video_player.dart';
 
+import '../../data/models/lecture.dart';
 import '../widgets/completion_button.dart';
 import '../widgets/lecture_header.dart';
 
@@ -31,7 +31,7 @@ class _VideoLectureScreenState extends State<VideoLectureScreen> {
   Future<void> _initializeVideo() async {
     try {
       _videoPlayerController = VideoPlayerController.networkUrl(
-        Uri.parse(widget.lecture.contentUrl),
+        Uri.parse(widget.lecture.url),
       );
 
       await _videoPlayerController!.initialize();

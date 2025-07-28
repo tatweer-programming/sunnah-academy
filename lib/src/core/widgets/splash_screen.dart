@@ -43,8 +43,8 @@ class SplashScreen extends StatelessWidget {
   Widget _buildSplashLogo(BuildContext context, ColorScheme colorScheme) {
     ThemeData theme = Theme.of(context);
     return Container(
-      width: 120,
-      height: 120,
+      width: 30.w,
+      height: 30.w,
       decoration: BoxDecoration(
         color: theme.colorScheme.surface,
         shape: BoxShape.circle,
