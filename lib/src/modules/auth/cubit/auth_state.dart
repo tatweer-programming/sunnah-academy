@@ -22,10 +22,10 @@ final class AuthSuccess extends AuthState {
 }
 
 final class AuthError extends AuthState {
-  final Exception error;
+  final Exception exception;
 
-  const AuthError(this.error);
+  const AuthError(this.exception);
 
   @override
-  List<Object> get props => [error];
+  List<Object> get props => [exception];
 }

@@ -4,12 +4,21 @@ import 'package:sunnah_academy/src/core/debugging/loggable.dart';
 import 'package:sunnah_academy/src/modules/auth/data/models/student_creation_form.dart';
 import 'package:sunnah_academy/src/modules/auth/data/repositories/auth_repository.dart';
 
+import '../../../core/services/dep_injection.dart';
+
 part 'auth_state.dart';
 
 class AuthCubit extends Cubit<AuthState> {
   final AuthRepository _authRepository;
 
   AuthCubit(this._authRepository) : super(AuthInitial());
+  static AuthCubit? _cubit;
+  static AuthCubit get instance {
+    if (_cubit == null || _cubit!.isClosed) {
+      _cubit = AuthCubit(sl());
+    }
+    return _cubit!;
+  }
 
   Future<void> register(StudentCreationForm creationForm) async {
     emit(AuthLoading());
