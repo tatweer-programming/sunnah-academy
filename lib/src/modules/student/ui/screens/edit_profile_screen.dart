@@ -121,7 +121,6 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
                 child: Column(
                   children: [
                     SizedBox(height: 20.0),
-
                     // Form Fields
                     Card(
                       child: Padding(
