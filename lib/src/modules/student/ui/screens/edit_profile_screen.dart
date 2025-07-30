@@ -120,31 +120,6 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
                 key: _formKey,
                 child: Column(
                   children: [
-                    // Profile Picture Section
-                    Card(
-                      child: Padding(
-                        padding: EdgeInsets.all(20.0),
-                        child: Column(
-                          children: [
-                            CircleAvatar(
-                              radius: 40,
-                              backgroundColor: theme.colorScheme.primary,
-                              child: Icon(
-                                Icons.person,
-                                size: 40,
-                                color: theme.colorScheme.onPrimary,
-                              ),
-                            ),
-                            SizedBox(height: 12.0),
-                            Text(
-                              'الصورة الشخصية',
-                              style: theme.textTheme.titleSmall,
-                            ),
-                          ],
-                        ),
-                      ),
-                    ),
-
                     SizedBox(height: 20.0),
 
                     // Form Fields
