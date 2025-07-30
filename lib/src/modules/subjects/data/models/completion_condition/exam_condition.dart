@@ -1,4 +1,4 @@
-import 'package:sunnah_academy/src/modules/subjects/data/completion_condition/completion_condition.dart';
+import 'completion_condition.dart' show CompletionCondition;
 
 final class ExamCondition extends CompletionCondition {
   final String examId;

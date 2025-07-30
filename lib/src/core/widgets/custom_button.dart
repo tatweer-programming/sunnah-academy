@@ -54,28 +54,37 @@ class CustomButton extends StatelessWidget {
     Widget button;
     switch (type) {
       case ButtonType.elevated:
-        button = ElevatedButton(
-          onPressed: isLoading ? null : onPressed,
-          child: buttonChild,
+        button = SizedBox(
+          height: height ?? 6.h,
+          child: ElevatedButton(
+            onPressed: isLoading ? null : onPressed,
+            child: buttonChild,
+          ),
         );
         break;
       case ButtonType.outlined:
-        button = OutlinedButton(
-          onPressed: isLoading ? null : onPressed,
-          child: buttonChild,
+        button = SizedBox(
+          height: height ?? 6.h,
+          child: OutlinedButton(
+            onPressed: isLoading ? null : onPressed,
+            child: buttonChild,
+          ),
         );
         break;
       case ButtonType.text:
-        button = TextButton(
-          onPressed: isLoading ? null : onPressed,
-          child: buttonChild,
+        button = SizedBox(
+          height: height ?? 6.h,
+          child: TextButton(
+            onPressed: isLoading ? null : onPressed,
+            child: buttonChild,
+          ),
         );
         break;
     }
 
     return SizedBox(
       width: width ?? 90.w,
-      height: height ?? 5.h,
+      height: height ?? 6.h,
       child: button,
     );
   }

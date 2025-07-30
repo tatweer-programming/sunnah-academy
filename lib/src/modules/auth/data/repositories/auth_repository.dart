@@ -1,9 +1,10 @@
 import 'package:dartz/dartz.dart';
-import 'package:sunnah_academy/src/modules/student/data/models/student.dart';
+import 'package:sunnah_academy/src/core/debugging/loggable.dart';
 import 'package:sunnah_academy/src/modules/auth/data/models/auth_info.dart';
 import 'package:sunnah_academy/src/modules/auth/data/models/student_creation_form.dart';
 import 'package:sunnah_academy/src/modules/auth/data/services/auth_local_services.dart';
 import 'package:sunnah_academy/src/modules/auth/data/services/auth_remote_services.dart';
+import 'package:sunnah_academy/src/modules/student/data/models/student.dart';
 
 class AuthRepository {
   final AuthRemoteServices _authRemoteServices;
@@ -63,7 +64,13 @@ class AuthRepository {
       (exception) => Left(exception),
       (success) {
         // Save user data locally after successful login
-        _authLocalServices.saveAuthResult(success.value2, success.value1);
+        _authLocalServices
+            .saveAuthResult(success.value2, success.value1)
+            .whenComplete(
+          () {
+            logInfo("User data saved locally");
+          },
+        );
         return const Right(unit);
       },
     );

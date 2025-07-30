@@ -1,7 +1,6 @@
 import 'package:equatable/equatable.dart';
+import 'package:sunnah_academy/src/modules/subjects/data/models/completion_condition/completion_condition.dart';
 import 'package:sunnah_academy/src/modules/subjects/data/models/lecture.dart';
-
-import '../completion_condition/completion_condition.dart';
 
 class Subject extends Equatable {
   final String id;

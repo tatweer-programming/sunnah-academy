@@ -1,8 +1,8 @@
 import 'package:dartz/dartz.dart';
 import 'package:sunnah_academy/src/core/apis/api.dart';
 import 'package:sunnah_academy/src/core/services/secure_storage_helper.dart';
-import 'package:sunnah_academy/src/modules/student/data/models/student.dart';
 import 'package:sunnah_academy/src/modules/auth/data/models/auth_info.dart';
+import 'package:sunnah_academy/src/modules/student/data/models/student.dart';
 
 class AuthLocalServices {
   // This class can be used to manage local authentication services

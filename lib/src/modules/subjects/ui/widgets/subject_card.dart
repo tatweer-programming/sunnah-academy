@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:sizer/sizer.dart';
-import 'package:sunnah_academy/src/modules/subjects/data/completion_condition/exam_condition.dart';
+import 'package:sunnah_academy/src/modules/subjects/data/models/completion_condition/exam_condition.dart';
 import 'package:sunnah_academy/src/modules/subjects/data/models/subject.dart';
 
 class SubjectCard extends StatelessWidget {

@@ -7,5 +7,5 @@ class EndPoints {
   static const String subjects = '/subjects';
   static const String students = '/students';
   static const String activityLogs = '/activity-logs';
-  static const String profile = '/students/me';
+  static const String profile = '/students/profile';
 }

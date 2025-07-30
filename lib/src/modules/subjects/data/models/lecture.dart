@@ -1,5 +1,5 @@
 import 'package:equatable/equatable.dart';
-import 'package:sunnah_academy/src/modules/subjects/data/completion_condition/completion_condition.dart';
+import 'package:sunnah_academy/src/modules/subjects/data/models/completion_condition/completion_condition.dart';
 
 class Lecture extends Equatable {
   final String id;

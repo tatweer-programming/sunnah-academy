@@ -3,6 +3,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:sunnah_academy/src/core/routing/navigation_manager.dart';
 import 'package:sunnah_academy/src/modules/auth/cubit/auth_cubit.dart';
 import 'package:sunnah_academy/src/modules/auth/ui/screens/register_screen.dart';
+import 'package:sunnah_academy/src/modules/student/ui/screens/profile_page.dart';
 
 import '../../../../core/error/exception_manager.dart';
 import '../../../../core/widgets/custom_button.dart';
@@ -94,6 +95,8 @@ class _LoginScreenState extends State<LoginScreen> {
                   backgroundColor: theme.colorScheme.primary,
                 ),
               );
+              context.pushAndRemove(ProfileScreen());
+
             } else if (state is AuthError) {
               ExceptionManager.showMessage(state.exception);
             }
