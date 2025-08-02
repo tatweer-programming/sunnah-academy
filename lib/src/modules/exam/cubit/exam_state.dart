@@ -25,11 +25,11 @@ final class ExamError extends ExamState {
 
   @override
   List<Object> get props => [message];
-}/// State indicating the user is currently taking the exam.
+}
 class ExamInProgress extends ExamState {
   final Exam exam;
   final int currentQuestionIndex;
-  final HashMap<String, int> selectedAnswers; // Using HashMap for efficient lookups
+  final HashMap<String, int> selectedAnswers;
 
   const ExamInProgress({
     required this.exam,
@@ -53,10 +53,8 @@ class ExamInProgress extends ExamState {
   }
 }
 
-/// State indicating that answers are being submitted.
 class ExamSubmitting extends ExamState {}
 
-/// State indicating successful submission of answers.
 class ExamSubmissionSuccess extends ExamState {
   final String message;
 
@@ -66,7 +64,6 @@ class ExamSubmissionSuccess extends ExamState {
   List<Object> get props => [message];
 }
 
-/// State indicating an error during answer submission.
 class ExamSubmissionError extends ExamState {
   final String message;
 
