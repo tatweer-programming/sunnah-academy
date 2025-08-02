@@ -22,7 +22,7 @@ class Student {
       email: json['email'],
       gender: json['gender'],
       birthDate: json['birthDate'],
-      currentLevel: json['currentLevel'],
+      currentLevel: json['currentLevel']??0,
       id: json['id'],
     );
   }

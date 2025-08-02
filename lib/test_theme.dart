@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 
 class MainTestScreen extends StatefulWidget {
+  const MainTestScreen({super.key});
+
   @override
   _MainTestScreenState createState() => _MainTestScreenState();
 }
@@ -70,6 +72,8 @@ class _MainTestScreenState extends State<MainTestScreen> {
 
 // الشاشة الأولى: الأزرار والمدخلات
 class ButtonsAndInputsScreen extends StatefulWidget {
+  const ButtonsAndInputsScreen({super.key});
+
   @override
   _ButtonsAndInputsScreenState createState() => _ButtonsAndInputsScreenState();
 }
@@ -287,6 +291,8 @@ class _ButtonsAndInputsScreenState extends State<ButtonsAndInputsScreen> {
 
 // الشاشة الثانية: البطاقات والقوائم
 class CardsAndListsScreen extends StatelessWidget {
+  const CardsAndListsScreen({super.key});
+
   @override
   Widget build(BuildContext context) {
     return SingleChildScrollView(
@@ -451,6 +457,8 @@ class CardsAndListsScreen extends StatelessWidget {
 
 // الشاشة الثالثة: عناصر التحكم والمؤشرات
 class ControlsAndIndicatorsScreen extends StatefulWidget {
+  const ControlsAndIndicatorsScreen({super.key});
+
   @override
   _ControlsAndIndicatorsScreenState createState() =>
       _ControlsAndIndicatorsScreenState();
