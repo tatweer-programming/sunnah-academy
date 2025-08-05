@@ -7,7 +7,7 @@ import 'package:sunnah_academy/src/core/apis/dio_helper.dart';
 import 'package:sunnah_academy/src/core/services/dep_injection.dart'
     show ServiceLocator;
 import 'package:sunnah_academy/src/core/services/secure_storage_helper.dart';
-import 'package:sunnah_academy/src/modules/student/ui/screens/profile_page.dart';
+import 'package:sunnah_academy/src/modules/subjects/ui/screens/subjects_screens.dart';
 
 import '../../modules/auth/ui/screens/login_screen.dart';
 import '../debugging/app_logger.dart';
@@ -28,7 +28,7 @@ class AppInitializer {
     await _getSavedData();
     if (ApiManager.authToken != null) {
       DioHelper.setToken(ApiManager.authToken!);
-      return ProfileScreen();
+      return SubjectsScreen();
     } else {
       return LoginScreen();
     }

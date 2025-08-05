@@ -9,6 +9,8 @@ import '../../../../core/apis/dio_helper.dart';
 import '../../../../core/error/custom_exceptions/auth_exceptions.dart';
 
 class AuthRemoteServices {
+  String? verificationId;
+
   Future<Either<Exception, Tuple2<Student, AuthInfo>>> register(
       StudentCreationForm creationForm) async {
     try {
@@ -39,8 +41,22 @@ class AuthRemoteServices {
 
   Future<Either<Exception, Unit>> forgotPassword(String email) async {
     try {
-      await DioHelper.postData(path: EndPoints.forgotPassword, data: {
+      var response =
+          await DioHelper.postData(path: EndPoints.forgotPassword, data: {
         "email": email,
+      });
+      verificationId = response.data['userId'];
+      return const Right(unit);
+    } on Exception catch (e) {
+      return Left(_classifyException(e));
+    }
+  }
+
+  Future<Either<Exception, Unit>> verifyCode(String code) async {
+    try {
+      await DioHelper.postData(path: EndPoints.verifyOtp, data: {
+        "id": verificationId,
+        "code": code,
       });
       return const Right(unit);
     } on Exception catch (e) {
@@ -49,11 +65,12 @@ class AuthRemoteServices {
   }
 
   Future<Either<Exception, Unit>> resetPassword(
-      String newPassword, String oldPassword) async {
+    String newPassword,
+  ) async {
     try {
       await DioHelper.postData(path: EndPoints.resetPassword, data: {
         "newPassword": newPassword,
-        "oldPassword": oldPassword,
+        "id": verificationId,
       });
       return const Right(unit);
     } on Exception catch (e) {

@@ -33,10 +33,14 @@ class AuthRepository {
     );
   }
 
-  Future<Either<Exception, Unit>> resetPassword(
-      String newPassword, String oldPassword) async {
-    var remoteResult =
-        await _authRemoteServices.resetPassword(newPassword, oldPassword);
+  Future<Either<Exception, Unit>> verifyCode(String code) async {
+    return await _authRemoteServices.verifyCode(code);
+  }
+
+  Future<Either<Exception, Unit>> resetPassword(String newPassword) async {
+    var remoteResult = await _authRemoteServices.resetPassword(
+      newPassword,
+    );
     return remoteResult.fold(
       (exception) => Left(exception),
       (success) async {
