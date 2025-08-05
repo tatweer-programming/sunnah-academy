@@ -78,17 +78,13 @@ class AuthRemoteServices {
     }
   }
 
-  _classifyException(
-    Exception exception,
-  ) {
-    {
-      if (exception is DioException) {
-        AuthException authException = AuthException(
-            requestOptions: exception.requestOptions,
-            response: exception.response);
-        return authException;
-      }
-      return exception;
+  _classifyException(Exception exception) {
+    if (exception is DioException) {
+      AuthException authException = AuthException(
+          requestOptions: exception.requestOptions,
+          response: exception.response);
+      return authException;
     }
+    return exception;
   }
 }

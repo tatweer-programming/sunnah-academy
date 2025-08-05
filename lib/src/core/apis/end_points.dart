@@ -9,4 +9,8 @@ class EndPoints {
   static const String students = '/students';
   static const String activityLogs = '/activity-logs';
   static const String profile = '/students/profile';
+
+  static const String getExams = '/students/exams/';
+  static const String submitExam = '/submit';
+
 }
