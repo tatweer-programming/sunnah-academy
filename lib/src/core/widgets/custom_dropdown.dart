@@ -11,7 +11,7 @@ class CustomDropdown<T> extends StatelessWidget {
   final bool enabled;
 
   const CustomDropdown({
-    Key? key,
+    super.key,
     required this.label,
     this.hint,
     this.prefixIcon,
@@ -20,7 +20,7 @@ class CustomDropdown<T> extends StatelessWidget {
     this.onChanged,
     this.validator,
     this.enabled = true,
-  }) : super(key: key);
+  });
 
   @override
   Widget build(BuildContext context) {

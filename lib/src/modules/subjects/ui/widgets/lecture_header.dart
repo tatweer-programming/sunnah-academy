@@ -6,10 +6,10 @@ class LectureHeader extends StatelessWidget {
   final Widget? actionButton;
 
   const LectureHeader({
-    Key? key,
+    super.key,
     required this.lecture,
     this.actionButton,
-  }) : super(key: key);
+  });
 
   @override
   Widget build(BuildContext context) {

@@ -27,20 +27,17 @@ class CustomErrorWidget extends StatelessWidget {
           children: [
             Expanded(
               child: Image(
-                height: 80.h,
+                height: height != null ? height! * 0.8 : 80.h,
                 width: 80.w,
                 image: AssetImage(ExceptionManager.getIconPath(exception)),
                 fit: BoxFit.contain,
-                color: theme.colorScheme.error,
+                // color: theme.colorScheme.error,
                 colorBlendMode: BlendMode.overlay,
               ),
             ),
-            SizedBox(height: 20.h),
             Text(
               ExceptionManager.getMessage(exception),
-              style: theme.textTheme.bodyLarge?.copyWith(
-                fontSize: 16.sp,
-                fontWeight: FontWeight.bold,
+              style: theme.textTheme.titleMedium?.copyWith(
                 color: theme.colorScheme.error,
               ),
               textAlign: TextAlign.center,

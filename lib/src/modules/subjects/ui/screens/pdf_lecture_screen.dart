@@ -20,7 +20,7 @@ class PdfLectureScreen extends StatefulWidget {
 
 class _PdfLectureScreenState extends State<PdfLectureScreen> {
   bool _isCompletionLoading = false;
-  bool _isPdfLoading = true;
+  final bool _isPdfLoading = true;
   bool _isFullScreen = false;
   String? _localPdfPath;
   String? _error;

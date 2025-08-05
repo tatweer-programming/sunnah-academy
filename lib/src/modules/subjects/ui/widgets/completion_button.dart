@@ -16,7 +16,7 @@ class CompletionButton extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    if (lecture.completionCondition == null || lecture.isComplete) {
+    if (lecture.isComplete) {
       return const SizedBox.shrink();
     }
 
