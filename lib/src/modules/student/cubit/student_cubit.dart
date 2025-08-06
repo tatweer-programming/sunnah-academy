@@ -68,7 +68,7 @@ class StudentCubit extends Cubit<StudentState> {
   Future<void> updateProfile({
     String? name,
     String? phoneNumber,
-    String? gender,
+    String? email,
     String? birthDate,
   }) async {
     try {
@@ -78,7 +78,7 @@ class StudentCubit extends Cubit<StudentState> {
       final result = await _repository.updateProfile(
         name: name,
         phoneNumber: phoneNumber,
-        gender: gender,
+        email: email,
         birthDate: birthDate,
       );
 
