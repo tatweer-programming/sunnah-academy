@@ -3,6 +3,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:sizer/sizer.dart';
 import 'package:sunnah_academy/src/core/error/exception_manager.dart';
 import 'package:sunnah_academy/src/core/routing/navigation_manager.dart';
+import 'package:sunnah_academy/src/core/services/input_validator.dart';
 import 'package:sunnah_academy/src/core/widgets/core_widgets.dart';
 import 'package:sunnah_academy/src/core/widgets/custom_button.dart';
 import 'package:sunnah_academy/src/core/widgets/custom_text_field.dart';
@@ -113,13 +114,7 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
                               prefixIcon: Icons.person,
                               controller: _nameController,
                               validator: (value) {
-                                if (value == null || value.trim().isEmpty) {
-                                  return 'يرجى إدخال الاسم';
-                                }
-                                if (value.trim().length < 2) {
-                                  return 'الاسم يجب أن يكون أكثر من حرفين';
-                                }
-                                return null;
+                                return InputValidator.validateName(value);
                               },
                             ),
 
@@ -127,24 +122,14 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
 
                             // Email Field - قابل للتعديل الآن
                             CustomTextField(
-                              label: 'البريد الإلكتروني',
-                              hint: 'أدخل بريدك الإلكتروني',
-                              prefixIcon: Icons.email,
-                              controller: _emailController,
-                              keyboardType: TextInputType.emailAddress,
-                              validator: (value) {
-                                if (value == null || value.trim().isEmpty) {
-                                  return 'يرجى إدخال البريد الإلكتروني';
-                                }
-                                // Email validation regex
-                                final emailRegex = RegExp(
-                                    r'^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$');
-                                if (!emailRegex.hasMatch(value.trim())) {
-                                  return 'يرجى إدخال بريد إلكتروني صحيح';
-                                }
-                                return null;
-                              },
-                            ),
+                                label: 'البريد الإلكتروني',
+                                hint: 'أدخل بريدك الإلكتروني',
+                                prefixIcon: Icons.email,
+                                controller: _emailController,
+                                keyboardType: TextInputType.emailAddress,
+                                validator: (value) {
+                                  return InputValidator.validateEmail(value);
+                                }),
 
                             SizedBox(height: 16.0),
 
@@ -155,15 +140,8 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
                               prefixIcon: Icons.phone,
                               controller: _phoneController,
                               keyboardType: TextInputType.phone,
-                              validator: (value) {
-                                if (value == null || value.trim().isEmpty) {
-                                  return 'يرجى إدخال رقم الهاتف';
-                                }
-                                if (value.trim().length < 10) {
-                                  return 'رقم الهاتف غير صحيح';
-                                }
-                                return null;
-                              },
+                              validator: (value) =>
+                                  InputValidator.validatePhone(value),
                             ),
 
                             SizedBox(height: 16.0),
@@ -182,12 +160,9 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
                                   _selectedBirthDate = date;
                                 });
                               },
-                              validator: (value) {
-                                if (_selectedBirthDate == null) {
-                                  return 'يرجى اختيار تاريخ الميلاد';
-                                }
-                                return null;
-                              },
+                              validator: (value) =>
+                                  InputValidator.validateBirthDate(
+                                      DateTime.tryParse(value ?? '')),
                             ),
                           ],
                         ),
@@ -318,9 +293,8 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
       final phoneNumber = _phoneController.text.trim();
       final birthDate = _selectedBirthDate?.toIso8601String().split('T')[0];
 
-      // Check if any data has changed - إزالة التحقق من الجنس وإضافة التحقق من الإيميل
       final hasChanges = name != widget.student.name ||
-          email != widget.student.email || // إضافة التحقق من الإيميل
+          email != widget.student.email ||
           phoneNumber != widget.student.phoneNumber ||
           birthDate != widget.student.birthDate;
 
@@ -329,10 +303,9 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
         return;
       }
 
-      // إرسال البيانات بدون الجنس وإضافة الإيميل
       context.read<StudentCubit>().updateProfile(
             name: name,
-            email: email, // إضافة الإيميل
+            email: email,
             phoneNumber: phoneNumber,
             birthDate: birthDate,
           );
