@@ -119,8 +119,6 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
                             ),
 
                             SizedBox(height: 16.0),
-
-                            // Email Field - قابل للتعديل الآن
                             CustomTextField(
                                 label: 'البريد الإلكتروني',
                                 hint: 'أدخل بريدك الإلكتروني',

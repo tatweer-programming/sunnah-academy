@@ -29,7 +29,6 @@ class _ProfileScreenState extends State<ProfileScreen> {
 
   @override
   void dispose() {
-    // Don't close the cubit here since it's a singleton
     super.dispose();
   }
 
