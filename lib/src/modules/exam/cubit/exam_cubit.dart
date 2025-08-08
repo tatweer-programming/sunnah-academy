@@ -74,7 +74,7 @@ class ExamCubit extends Cubit<ExamState> {
       final result = await _examRepository.submitExamAnswers(submitRequest);
 
       result.fold(
-        (failure) => emit(ExamSubmissionError(message: failure.message??"حدث خطأ ما")),
+        (failure) => emit(ExamSubmissionError(message: failure.response!.data["message"]??"حدث خطأ ما")),
         (successMessage) =>
             emit(ExamSubmissionSuccess(message: successMessage)),
       );
