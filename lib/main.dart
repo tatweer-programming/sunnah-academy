@@ -52,7 +52,7 @@ class MyApp extends StatelessWidget {
                   ExamRepository(remoteServices: ExamRemoteServicesImpl())),
         ),
         BlocProvider<SubjectsCubit>.value(
-          value: SubjectsCubit(SubjectsRepository(SubjectServices())),
+          value: SubjectsCubit(SubjectsRepository(SubjectRemoteServices())),
         ),
       ],
       child: Sizer(builder: (context, orientation, deviceType) {

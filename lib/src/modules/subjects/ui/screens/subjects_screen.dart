@@ -25,7 +25,7 @@ class _SubjectsScreenState extends State<SubjectsScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text('Available Subjects',
+        title: Text('Subjects',
             style: TextStyle(fontSize: 16.sp, fontWeight: FontWeight.bold)),
         elevation: 0,
         backgroundColor: Theme.of(context).primaryColor,
