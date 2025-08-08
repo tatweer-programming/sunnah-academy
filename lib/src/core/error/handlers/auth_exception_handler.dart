@@ -27,9 +27,12 @@ class AuthExceptionHandler implements ExceptionHandler {
         return "الحساب موقوف لأسباب قانونية";
       case 503:
         return "خدمة المصادقة غير متوفرة حالياً";
-
+      case 504:
+        return "خدمة المصادقة غير متوفرة حالياً";
+      case 500:
+        return "خطأ في الخادم. يرجى المحاولة لاحقاً";
       default:
-        return AssetsManager.errorIcon;
+        return "حدث خطأ. يرجى المحاولة لاحقاً";
     }
   }
 

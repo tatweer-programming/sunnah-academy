@@ -9,7 +9,7 @@ import '../widgets/lecture_header.dart';
 class AudioLectureScreen extends StatefulWidget {
   final Lecture lecture;
 
-  const AudioLectureScreen({Key? key, required this.lecture}) : super(key: key);
+  const AudioLectureScreen({super.key, required this.lecture});
 
   @override
   State<AudioLectureScreen> createState() => _AudioLectureScreenState();

@@ -20,7 +20,7 @@ class StudentRemoteServices {
   Future<Either<Exception, Student>> updateProfile({
     String? name,
     String? phoneNumber,
-    String? gender,
+    String? email,
     String? birthDate,
   }) async {
     try {
@@ -28,7 +28,7 @@ class StudentRemoteServices {
       Map<String, dynamic> data = {};
       if (name != null) data['name'] = name;
       if (phoneNumber != null) data['phoneNumber'] = phoneNumber;
-      if (gender != null) data['gender'] = gender;
+      if (email != null) data['email'] = email;
       if (birthDate != null) data['birthDate'] = birthDate;
 
       var response = await DioHelper.putData(

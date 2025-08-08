@@ -9,13 +9,13 @@ abstract class BaseSubjectServices {
   Future<Either<Exception, Unit>> completeLecture({required int lectureId});
 }
 
-class SubjectServices implements BaseSubjectServices {
+class SubjectRemoteServices implements BaseSubjectServices {
   @override
   Future<Either<Exception, List<Subject>>> getSubjects() async {
     try {
-      final response = await DioHelper.getData(path: EndPoints.students + EndPoints.subjects);
+      final response = await DioHelper.getData(path: EndPoints.subjects);
 
-      final List<dynamic> data = response.data['data']["subjects"];
+      final List data = response.data['data']['subjects'];
       final List<Subject> subjects =
           data.map((json) => Subject.fromJson(json)).toList();
       return Right(subjects);

@@ -13,11 +13,11 @@ class StudentRepository {
   Future<Either<Exception, Student>> updateProfile({
     String? name,
     String? phoneNumber,
-    String? gender,
+    String? email,
     String? birthDate,
   }) {
     return _remoteServices.updateProfile(
-        gender: gender,
+        email: email,
         name: name,
         birthDate: birthDate,
         phoneNumber: phoneNumber);

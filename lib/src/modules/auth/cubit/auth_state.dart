@@ -1,27 +1,19 @@
 part of 'auth_cubit.dart';
 
-sealed class AuthState extends Equatable {
+abstract class AuthState extends Equatable {
   const AuthState();
-}
-
-final class AuthInitial extends AuthState {
-  @override
-  List<Object> get props => [];
-}
-
-final class AuthLoading extends AuthState {
-  @override
-  List<Object> get props => [];
-}
-
-final class AuthSuccess extends AuthState {
-  const AuthSuccess();
 
   @override
   List<Object> get props => [];
 }
 
-final class AuthError extends AuthState {
+class AuthInitial extends AuthState {}
+
+class AuthLoading extends AuthState {}
+
+class AuthSuccess extends AuthState {}
+
+class AuthError extends AuthState {
   final Exception exception;
 
   const AuthError(this.exception);
@@ -29,3 +21,17 @@ final class AuthError extends AuthState {
   @override
   List<Object> get props => [exception];
 }
+
+// States خاصة بعملية نسيان كلمة المرور
+class ForgotPasswordEmailSent extends AuthState {
+  final String email;
+
+  const ForgotPasswordEmailSent(this.email);
+
+  @override
+  List<Object> get props => [email];
+}
+
+class CodeVerificationSuccess extends AuthState {}
+
+class PasswordResetSuccess extends AuthState {}

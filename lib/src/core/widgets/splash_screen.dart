@@ -25,7 +25,7 @@ class SplashScreen extends StatelessWidget {
       curve: Curves.bounceIn,
       splash: _buildSplashLogo(context, colorScheme),
       splashTransition: SplashTransition.fadeTransition,
-      backgroundColor: colorScheme.background,
+      backgroundColor: colorScheme.surface,
     );
   }
 

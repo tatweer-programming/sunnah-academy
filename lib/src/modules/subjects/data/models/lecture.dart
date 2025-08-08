@@ -13,7 +13,7 @@ class Lecture extends Equatable {
       required this.name,
       required this.url,
       required this.contentType,
-      required this.completionCondition,
+      this.completionCondition,
       this.isComplete = false});
   factory Lecture.fromJson(Map<String, dynamic> json) {
     return Lecture(
@@ -21,8 +21,10 @@ class Lecture extends Equatable {
       name: json['name'],
       url: json['contentUrl'],
       contentType: json['contentType'],
-      completionCondition: null,
-      // CompletionCondition.fromJson(json['completionCondition'],
+      completionCondition: json["completionCondition"] != null
+          ? CompletionCondition.fromJson(json['completionCondition'])
+          : null,
+      isComplete: json['isCompleted'] ?? false,
     );
   }
 

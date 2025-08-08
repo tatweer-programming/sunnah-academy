@@ -1,6 +1,7 @@
 import 'package:bloc/bloc.dart';
 import 'package:equatable/equatable.dart';
 import 'package:sunnah_academy/src/modules/subjects/data/models/subject.dart';
+import 'package:sunnah_academy/src/modules/subjects/data/repositories/subjects_repository.dart';
 
 import '../data/repositories/subjects_repository.dart';
 

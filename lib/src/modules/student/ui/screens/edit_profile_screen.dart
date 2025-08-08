@@ -3,9 +3,9 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:sizer/sizer.dart';
 import 'package:sunnah_academy/src/core/error/exception_manager.dart';
 import 'package:sunnah_academy/src/core/routing/navigation_manager.dart';
+import 'package:sunnah_academy/src/core/services/input_validator.dart';
 import 'package:sunnah_academy/src/core/widgets/core_widgets.dart';
 import 'package:sunnah_academy/src/core/widgets/custom_button.dart';
-import 'package:sunnah_academy/src/core/widgets/custom_dropdown.dart';
 import 'package:sunnah_academy/src/core/widgets/custom_text_field.dart';
 import 'package:sunnah_academy/src/core/widgets/date_picker_field.dart';
 import 'package:sunnah_academy/src/modules/student/cubit/student_cubit.dart';
@@ -28,15 +28,9 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
   final _formKey = GlobalKey<FormState>();
   final _nameController = TextEditingController();
   final _phoneController = TextEditingController();
+  final _emailController = TextEditingController(); // إضافة controller للإيميل
 
-  String? _selectedGender;
   DateTime? _selectedBirthDate;
-
-  // تعديل قائمة الخيارات لتتطابق مع القيم المحفوظة في قاعدة البيانات
-  final List<DropdownMenuItem<String>> _genderOptions = [
-    DropdownMenuItem(value: 'male', child: Text('ذكر')),
-    DropdownMenuItem(value: 'female', child: Text('أنثى')),
-  ];
 
   @override
   void initState() {
@@ -47,15 +41,7 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
   void _initializeFields() {
     _nameController.text = widget.student.name;
     _phoneController.text = widget.student.phoneNumber;
-
-    // التأكد من تطابق القيمة مع إحدى الخيارات المتاحة
-    final validGenderValues = _genderOptions.map((item) => item.value).toList();
-    if (validGenderValues.contains(widget.student.gender)) {
-      _selectedGender = widget.student.gender;
-    } else {
-      // في حالة عدم تطابق القيمة، نحاول تحويلها
-      _selectedGender = _convertGenderToEnglish(widget.student.gender);
-    }
+    _emailController.text = widget.student.email; // تهيئة حقل الإيميل
 
     // Parse birth date
     if (widget.student.birthDate.isNotEmpty) {
@@ -67,26 +53,11 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
     }
   }
 
-  // دالة لتحويل الجنس من العربية إلى الإنجليزية إذا لزم الأمر
-  String? _convertGenderToEnglish(String? gender) {
-    if (gender == null || gender.isEmpty) return null;
-
-    switch (gender.toLowerCase()) {
-      case 'ذكر':
-      case 'male':
-        return 'male';
-      case 'أنثى':
-      case 'female':
-        return 'female';
-      default:
-        return null;
-    }
-  }
-
   @override
   void dispose() {
     _nameController.dispose();
     _phoneController.dispose();
+    _emailController.dispose(); // إضافة disposal للإيميل controller
     super.dispose();
   }
 
@@ -143,15 +114,20 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
                               prefixIcon: Icons.person,
                               controller: _nameController,
                               validator: (value) {
-                                if (value == null || value.trim().isEmpty) {
-                                  return 'يرجى إدخال الاسم';
-                                }
-                                if (value.trim().length < 2) {
-                                  return 'الاسم يجب أن يكون أكثر من حرفين';
-                                }
-                                return null;
+                                return InputValidator.validateName(value);
                               },
                             ),
+
+                            SizedBox(height: 16.0),
+                            CustomTextField(
+                                label: 'البريد الإلكتروني',
+                                hint: 'أدخل بريدك الإلكتروني',
+                                prefixIcon: Icons.email,
+                                controller: _emailController,
+                                keyboardType: TextInputType.emailAddress,
+                                validator: (value) {
+                                  return InputValidator.validateEmail(value);
+                                }),
 
                             SizedBox(height: 16.0),
 
@@ -162,37 +138,8 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
                               prefixIcon: Icons.phone,
                               controller: _phoneController,
                               keyboardType: TextInputType.phone,
-                              validator: (value) {
-                                if (value == null || value.trim().isEmpty) {
-                                  return 'يرجى إدخال رقم الهاتف';
-                                }
-                                if (value.trim().length < 10) {
-                                  return 'رقم الهاتف غير صحيح';
-                                }
-                                return null;
-                              },
-                            ),
-
-                            SizedBox(height: 16.0),
-
-                            // Gender Dropdown
-                            CustomDropdown<String>(
-                              label: 'الجنس',
-                              hint: 'اختر الجنس',
-                              prefixIcon: Icons.person_outline,
-                              value: _selectedGender,
-                              items: _genderOptions,
-                              onChanged: (value) {
-                                setState(() {
-                                  _selectedGender = value;
-                                });
-                              },
-                              validator: (value) {
-                                if (value == null || value.isEmpty) {
-                                  return 'يرجى اختيار الجنس';
-                                }
-                                return null;
-                              },
+                              validator: (value) =>
+                                  InputValidator.validatePhone(value),
                             ),
 
                             SizedBox(height: 16.0),
@@ -211,12 +158,9 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
                                   _selectedBirthDate = date;
                                 });
                               },
-                              validator: (value) {
-                                if (_selectedBirthDate == null) {
-                                  return 'يرجى اختيار تاريخ الميلاد';
-                                }
-                                return null;
-                              },
+                              validator: (value) =>
+                                  InputValidator.validateBirthDate(
+                                      DateTime.tryParse(value ?? '')),
                             ),
                           ],
                         ),
@@ -225,7 +169,7 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
 
                     SizedBox(height: 20.0),
 
-                    // Account Information (Read-only)
+                    // Account Information (Read-only) - الجنس أصبح للقراءة فقط
                     Card(
                       child: Padding(
                         padding: EdgeInsets.all(16.0),
@@ -241,9 +185,9 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
                             SizedBox(height: 16.0),
                             _buildReadOnlyField(
                               context,
-                              'البريد الإلكتروني',
-                              widget.student.email,
-                              Icons.email,
+                              'الجنس',
+                              widget.student.gender == 'male' ? 'ذكر' : 'أنثى',
+                              Icons.person_outline,
                             ),
                             SizedBox(height: 12.0),
                             _buildReadOnlyField(
@@ -343,14 +287,13 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
   void _saveProfile() {
     if (_formKey.currentState?.validate() ?? false) {
       final name = _nameController.text.trim();
+      final email = _emailController.text.trim(); // إضافة الإيميل
       final phoneNumber = _phoneController.text.trim();
-      final gender = _selectedGender;
       final birthDate = _selectedBirthDate?.toIso8601String().split('T')[0];
 
-      // Check if any data has changed
       final hasChanges = name != widget.student.name ||
+          email != widget.student.email ||
           phoneNumber != widget.student.phoneNumber ||
-          gender != widget.student.gender ||
           birthDate != widget.student.birthDate;
 
       if (!hasChanges) {
@@ -360,8 +303,8 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
 
       context.read<StudentCubit>().updateProfile(
             name: name,
+            email: email,
             phoneNumber: phoneNumber,
-            gender: gender,
             birthDate: birthDate,
           );
     }

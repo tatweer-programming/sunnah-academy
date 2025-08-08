@@ -637,7 +637,7 @@ class _ControlsAndIndicatorsScreenState
                     Tab(text: 'التبويب 3'),
                   ],
                 ),
-                Container(
+                SizedBox(
                   height: 200,
                   child: TabBarView(
                     controller: _tabController,
