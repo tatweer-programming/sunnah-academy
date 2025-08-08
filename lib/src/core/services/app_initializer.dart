@@ -15,6 +15,7 @@ import '../../modules/exam/cubit/exam_cubit.dart';
 import '../../modules/exam/data/repositories/exam_repository.dart';
 import '../../modules/exam/data/services/exam_remote_services.dart';
 import '../../modules/exam/ui/screens/exam_screen.dart';
+import '../../modules/subjects/ui/screens/subjects_screen.dart';
 import '../debugging/app_logger.dart';
 
 class AppInitializer {
@@ -33,7 +34,7 @@ class AppInitializer {
     await _getSavedData();
     if (ApiManager.authToken != null) {
       DioHelper.setToken(ApiManager.authToken!);
-      return  ExamScreen();
+      return SubjectsScreen();
     } else {
       return LoginScreen();
     }

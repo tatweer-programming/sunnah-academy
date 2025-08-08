@@ -11,6 +11,9 @@ import 'package:sunnah_academy/src/modules/exam/cubit/exam_cubit.dart';
 import 'package:sunnah_academy/src/modules/exam/data/repositories/exam_repository.dart';
 import 'package:sunnah_academy/src/modules/exam/data/services/exam_remote_services.dart';
 import 'package:sunnah_academy/src/modules/exam/ui/screens/exam_screen.dart';
+import 'package:sunnah_academy/src/modules/subjects/cubit/subjects_cubit.dart';
+import 'package:sunnah_academy/src/modules/subjects/data/repositories/subjects_repository.dart';
+import 'package:sunnah_academy/src/modules/subjects/data/services/subjects_services.dart';
 
 import 'generated/l10n.dart';
 
@@ -47,7 +50,10 @@ class MyApp extends StatelessWidget {
           value: ExamCubit(
               examRepository:
                   ExamRepository(remoteServices: ExamRemoteServicesImpl())),
-        )
+        ),
+        BlocProvider<SubjectsCubit>.value(
+          value: SubjectsCubit(SubjectsRepository(SubjectServices())),
+        ),
       ],
       child: Sizer(builder: (context, orientation, deviceType) {
         return MaterialApp(

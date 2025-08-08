@@ -9,6 +9,7 @@ import '../../../../core/error/exception_manager.dart';
 import '../../../../core/widgets/custom_button.dart';
 import '../../../../core/widgets/custom_text_field.dart';
 import '../../../../core/widgets/loading_overlay.dart';
+import '../../../subjects/ui/screens/subjects_screen.dart';
 import '../widgets/auth_header.dart';
 
 class LoginScreen extends StatefulWidget {
@@ -95,7 +96,7 @@ class _LoginScreenState extends State<LoginScreen> {
                   backgroundColor: theme.colorScheme.primary,
                 ),
               );
-              context.pushAndRemove(ProfileScreen());
+              context.pushAndRemove(SubjectsScreen());
 
             } else if (state is AuthError) {
               ExceptionManager.showMessage(state.exception);
