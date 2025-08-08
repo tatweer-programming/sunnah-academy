@@ -1,20 +1,21 @@
 import 'package:dartz/dartz.dart';
+import 'package:dio/dio.dart';
 import 'package:sunnah_academy/src/modules/exam/data/models/exam.dart';
 
 import '../models/submit_answer_request.dart';
-import '../services/exam_remote_services.dart';
+import '../services/exam_services.dart';
 
 class ExamRepository {
-  final ExamRemoteServices remoteServices;
+  final BaseExamServices _remoteServices;
 
-  const ExamRepository({required this.remoteServices});
+  const ExamRepository(this._remoteServices);
 
-  Future<Either<Exception, Exam>> getExam(String id) async {
-    return await remoteServices.getExamDetails(id);
+  Future<Either<DioException, Exam>> getExam(String id) async {
+    return await _remoteServices.getExamDetails(id);
   }
 
-  Future<Either<Exception, String>> submitExamAnswers(
+  Future<Either<DioException, String>> submitExamAnswers(
       SubmitAnswersRequest request) async {
-    return await remoteServices.submitAnswers(request);
+    return await _remoteServices.submitAnswers(request);
   }
 }

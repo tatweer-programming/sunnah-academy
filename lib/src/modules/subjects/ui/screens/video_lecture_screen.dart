@@ -125,37 +125,32 @@ class _VideoLectureScreenState extends State<VideoLectureScreen> {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(
-        title: const Text('محاضرة فيديو'),
-      ),
-      body: SingleChildScrollView(
-        padding: const EdgeInsets.all(16),
-        child: Column(
-          children: [
-            LectureHeader(
+    return SingleChildScrollView(
+      padding: const EdgeInsets.all(16),
+      child: Column(
+        children: [
+          LectureHeader(
+            lecture: widget.lecture,
+            actionButton: CompletionButton(
               lecture: widget.lecture,
-              actionButton: CompletionButton(
-                lecture: widget.lecture,
-                onComplete: _markAsCompleted,
-                isLoading: _isCompletionLoading,
-              ),
+              onComplete: _markAsCompleted,
+              isLoading: _isCompletionLoading,
             ),
-            const SizedBox(height: 24),
-            Container(
-              width: double.infinity,
-              height: 200,
-              decoration: BoxDecoration(
-                color: Colors.black,
-                borderRadius: BorderRadius.circular(8),
-              ),
-              child: ClipRRect(
-                borderRadius: BorderRadius.circular(8),
-                child: _buildVideoPlayer(),
-              ),
+          ),
+          const SizedBox(height: 24),
+          Container(
+            width: double.infinity,
+            height: 200,
+            decoration: BoxDecoration(
+              color: Colors.black,
+              borderRadius: BorderRadius.circular(8),
             ),
-          ],
-        ),
+            child: ClipRRect(
+              borderRadius: BorderRadius.circular(8),
+              child: _buildVideoPlayer(),
+            ),
+          ),
+        ],
       ),
     );
   }

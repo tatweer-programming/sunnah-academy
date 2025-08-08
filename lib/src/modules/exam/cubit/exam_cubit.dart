@@ -2,6 +2,7 @@ import 'dart:collection';
 
 import 'package:bloc/bloc.dart';
 import 'package:equatable/equatable.dart';
+import 'package:sunnah_academy/src/modules/exam/ui/widgets/navigation_question_button.dart';
 
 import '../data/models/answer.dart';
 import '../data/models/exam.dart';
@@ -11,19 +12,18 @@ import '../data/repositories/exam_repository.dart';
 part 'exam_state.dart';
 
 class ExamCubit extends Cubit<ExamState> {
-  final ExamRepository examRepository;
+  final ExamRepository _examRepository;
 
-  ExamCubit({required this.examRepository}) : super(ExamInitial());
-
-  /// Fetches exam details from the repository.
+  ExamCubit(this._examRepository) : super(ExamInitial());
   Future<void> getExamDetails(String examId) async {
     emit(ExamLoading());
-    final result = await examRepository.getExam(examId);
+    final result = await _examRepository.getExam(examId);
     result.fold(
       (failure) => emit(ExamError(message: failure.toString())),
       (exam) => emit(ExamLoaded(exam: exam)),
     );
   }
+
   void startExam(Exam exam) {
     emit(ExamInProgress(
       exam: exam,
@@ -36,41 +36,47 @@ class ExamCubit extends Cubit<ExamState> {
   void selectAnswer(String questionId, int selectedOptionIndex) {
     if (state is ExamInProgress) {
       final currentState = state as ExamInProgress;
-      final updatedAnswers = HashMap<String, int>.from(currentState.selectedAnswers);
+      final updatedAnswers =
+          HashMap<String, int>.from(currentState.selectedAnswers);
       updatedAnswers[questionId] = selectedOptionIndex;
       emit(currentState.copyWith(selectedAnswers: updatedAnswers));
     }
   }
 
-  /// Moves to the next question.
-  void nextQuestion() {
+  void nextQuestion(NavigationType navigationType) {
+    print(navigationType);
     if (state is ExamInProgress) {
       final currentState = state as ExamInProgress;
-      if (currentState.currentQuestionIndex < currentState.exam.questions.length - 1) {
-        emit(currentState.copyWith(currentQuestionIndex: currentState.currentQuestionIndex + 1));
+      if (navigationType == NavigationType.next) {
+        emit(currentState.copyWith(
+            currentQuestionIndex: currentState.currentQuestionIndex + 1));
+      } else if (navigationType == NavigationType.previous) {
+        emit(currentState.copyWith(
+            currentQuestionIndex: currentState.currentQuestionIndex - 1));
       } else {
-        // If it's the last question, automatically trigger submission
         submitAnswers();
       }
     }
   }
 
-  /// Submits the collected answers.
   Future<void> submitAnswers() async {
     if (state is ExamInProgress) {
       final currentState = state as ExamInProgress;
       emit(ExamSubmitting());
 
       final List<Answer> answers = currentState.selectedAnswers.entries
-          .map((entry) => Answer(questionId: entry.key, selectedOptionIndex: entry.value))
+          .map((entry) =>
+              Answer(questionId: entry.key, selectedOptionIndex: entry.value))
           .toList();
 
-      final submitRequest = SubmitAnswersRequest(answers: answers, examId: currentState.exam.id);
-      final result = await examRepository.submitExamAnswers(submitRequest);
+      final submitRequest =
+          SubmitAnswersRequest(answers: answers, examId: currentState.exam.id);
+      final result = await _examRepository.submitExamAnswers(submitRequest);
 
       result.fold(
-            (failure) => emit(ExamSubmissionError(message: failure.toString())),
-            (successMessage) => emit(ExamSubmissionSuccess(message: successMessage)),
+        (failure) => emit(ExamSubmissionError(message: failure.message??"حدث خطأ ما")),
+        (successMessage) =>
+            emit(ExamSubmissionSuccess(message: successMessage)),
       );
     }
   }

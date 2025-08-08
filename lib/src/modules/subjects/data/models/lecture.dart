@@ -28,6 +28,7 @@ class Lecture extends Equatable {
     );
   }
 
+
   @override
   List<Object?> get props => [id, name, url, contentType];
 }

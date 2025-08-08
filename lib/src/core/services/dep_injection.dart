@@ -1,6 +1,8 @@
 import 'package:get_it/get_it.dart';
 import 'package:sunnah_academy/src/modules/auth/data/repositories/auth_repository.dart';
 import 'package:sunnah_academy/src/modules/auth/data/services/auth_remote_services.dart';
+import 'package:sunnah_academy/src/modules/exam/data/repositories/exam_repository.dart';
+import 'package:sunnah_academy/src/modules/exam/data/services/exam_services.dart';
 import 'package:sunnah_academy/src/modules/student/data/services/account_remote_services.dart';
 import 'package:sunnah_academy/src/modules/subjects/data/services/subjects_services.dart';
 
@@ -23,6 +25,7 @@ class ServiceLocator {
     sl.registerLazySingleton(() => AuthRemoteServices());
     sl.registerLazySingleton(() => StudentRemoteServices());
     sl.registerLazySingleton(() => SubjectRemoteServices());
+    sl.registerLazySingleton(() => ExamRemoteServices());
   }
 
   static void _initializeLocalServices() {
@@ -36,6 +39,7 @@ class ServiceLocator {
         () => StudentRepository(sl<StudentRemoteServices>()));
     sl.registerLazySingleton(
         () => SubjectsRepository(sl<SubjectRemoteServices>()));
+    sl.registerLazySingleton(() => ExamRepository(sl<ExamRemoteServices>()));
   }
 
   static void _initializeBlocs() {

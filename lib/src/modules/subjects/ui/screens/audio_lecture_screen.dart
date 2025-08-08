@@ -161,11 +161,7 @@ class _AudioLectureScreenState extends State<AudioLectureScreen> {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(
-        title: const Text('محاضرة صوتية'),
-      ),
-      body: Padding(
+    return Padding(
         padding: const EdgeInsets.all(16),
         child: Column(
           children: [
@@ -314,7 +310,6 @@ class _AudioLectureScreenState extends State<AudioLectureScreen> {
             ),
           ],
         ),
-      ),
-    );
+      );
   }
 }

@@ -1,9 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:sizer/sizer.dart';
 import 'package:cached_network_image/cached_network_image.dart';
+import 'package:sunnah_academy/src/core/routing/navigation_manager.dart';
 
 import '../../data/models/lecture.dart';
 import '../../data/models/subject.dart';
+import 'lecture_details_screen.dart';
 
 class SubjectDetailScreen extends StatelessWidget {
   final Subject subject;
@@ -29,13 +31,11 @@ class SubjectDetailScreen extends StatelessWidget {
                 overflow: TextOverflow.ellipsis,
               ),
               background: Hero(
-                // Optional: for a nice transition if you use Hero animations
                 tag: 'subjectImage_${subject.id}', // Unique tag
                 child: CachedNetworkImage(
                   imageUrl: subject.imageUrl,
                   fit: BoxFit.cover,
-                  color: Colors.black.withOpacity(
-                      0.3), // Darken image slightly for text visibility
+                  color: Colors.black.withOpacity(0.3),
                   colorBlendMode: BlendMode.darken,
                   placeholder: (context, url) => Container(
                     color: Colors.grey[400],
@@ -59,8 +59,7 @@ class SubjectDetailScreen extends StatelessWidget {
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  Text('Description',
-                      style: Theme.of(context).textTheme.headlineSmall),
+                  Text('', style: Theme.of(context).textTheme.headlineSmall),
                   SizedBox(height: 1.h),
                   Text(subject.description,
                       style: Theme.of(context).textTheme.bodyMedium),
@@ -68,23 +67,21 @@ class SubjectDetailScreen extends StatelessWidget {
                   _buildInfoRow(
                       context,
                       Icons.bar_chart,
-                      'Progress: ${subject.progress}%',
-                      subject.isCompleted ? ' (Completed)' : ''),
+                      'التقدم: ${subject.progress}%',
+                      subject.isCompleted ? ' (تم)' : 'لم يتم'),
                   SizedBox(height: 1.h),
-                  _buildInfoRow(context, Icons.rule_sharp, 'Completion:',
-                      subject.completionCondition.type??""),
+                  // _buildInfoRow(context, Icons.rule_sharp, 'الأمتحانات:',
+                  //     subject.completionCondition.type),
                   if (subject.bookUrl != null &&
                       subject.bookUrl!.isNotEmpty) ...[
                     SizedBox(height: 1.h),
                     _buildInfoRow(
                       context,
                       Icons.menu_book,
-                      'Reference Book:',
+                      'مراجع:',
                       subject.bookUrl!,
                       isLink: true,
                       onTap: () {
-                        // Implement opening the book URL (e.g., using url_launcher package)
-                        print('Open book URL: ${subject.bookUrl}');
                         // await canLaunchUrl(Uri.parse(subject.bookUrl!))
                         //     ? await launchUrl(Uri.parse(subject.bookUrl!))
                         //     : throw 'Could not launch ${subject.bookUrl}';
@@ -92,7 +89,7 @@ class SubjectDetailScreen extends StatelessWidget {
                     ),
                   ],
                   SizedBox(height: 3.h),
-                  Text('Lectures (${subject.lectures.length})',
+                  Text('المحاضرات (${subject.lectures.length})',
                       style: Theme.of(context).textTheme.headlineSmall),
                 ],
               ),
@@ -103,7 +100,7 @@ class SubjectDetailScreen extends StatelessWidget {
                   child: Padding(
                     padding: EdgeInsets.symmetric(vertical: 5.h),
                     child: Center(
-                      child: Text('No lectures available for this subject.',
+                      child: Text('لا يوجد محاضرات ',
                           style: Theme.of(context).textTheme.bodyMedium),
                     ),
                   ),
@@ -129,9 +126,9 @@ class SubjectDetailScreen extends StatelessWidget {
       BuildContext context, IconData icon, String title, String value,
       {bool isLink = false, VoidCallback? onTap}) {
     return Row(
-      crossAxisAlignment: CrossAxisAlignment.start,
+      crossAxisAlignment: CrossAxisAlignment.center,
       children: [
-        Icon(icon, size: 16.sp, color: Theme.of(context).primaryColor),
+        Icon(icon, size: 20.sp, color: Theme.of(context).primaryColor),
         SizedBox(width: 2.w),
         Text('$title ', style: Theme.of(context).textTheme.titleMedium),
         Expanded(
@@ -184,9 +181,7 @@ class LectureTile extends StatelessWidget {
             : Icon(Icons.radio_button_unchecked,
                 color: Colors.grey, size: 18.sp),
         onTap: () {
-          // Handle lecture tap - e.g., navigate to a video player screen
-          print('Tapped lecture: ${lecture.name}, URL: ${lecture.url}');
-          // Navigator.push(context, MaterialPageRoute(builder: (context) => VideoPlayerScreen(lecture: lecture)));
+          context.push(LectureDetailScreen(lecture: lecture));
         },
       ),
     );

@@ -4,8 +4,6 @@ import 'package:sizer/sizer.dart';
 import 'package:sunnah_academy/src/core/routing/navigation_manager.dart';
 import 'package:sunnah_academy/src/modules/auth/cubit/auth_cubit.dart';
 import 'package:sunnah_academy/src/modules/auth/data/models/student_creation_form.dart';
-import 'package:sunnah_academy/src/modules/subjects/ui/screens/subjects_screens.dart';
-
 import '../../../../core/error/exception_manager.dart';
 import '../../../../core/services/input_validator.dart';
 import '../../../../core/widgets/custom_button.dart';
@@ -13,6 +11,7 @@ import '../../../../core/widgets/custom_dropdown.dart';
 import '../../../../core/widgets/custom_text_field.dart';
 import '../../../../core/widgets/date_picker_field.dart';
 import '../../../../core/widgets/loading_overlay.dart';
+import '../../../subjects/ui/screens/subjects_screen.dart';
 import '../widgets/auth_header.dart';
 
 class RegisterScreen extends StatefulWidget {

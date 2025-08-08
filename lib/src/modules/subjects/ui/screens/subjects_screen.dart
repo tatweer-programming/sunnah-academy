@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:sizer/sizer.dart';
 import 'package:cached_network_image/cached_network_image.dart';
+import 'package:sunnah_academy/src/core/widgets/custom_app_bar.dart';
 import 'package:sunnah_academy/src/modules/subjects/ui/screens/subject_details_screen.dart';
 import '../../cubit/subjects_cubit.dart';
 import '../../data/models/subject.dart';
@@ -14,33 +15,35 @@ class SubjectsScreen extends StatefulWidget {
 }
 
 class _SubjectsScreenState extends State<SubjectsScreen> {
-  final List<Subject> subjects = [];
+  List<Subject> subjects = [];
   @override
   initState() {
     context.read<SubjectsCubit>().getSubjects();
     super.initState();
+    if (subjects.isEmpty) {
+      context.read<SubjectsCubit>().getSubjects();
+    }
+  }
+  @override
+  void didUpdateWidget(covariant SubjectsScreen oldWidget) {
+    super.didUpdateWidget(oldWidget);
   }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        title: Text('Subjects',
-            style: TextStyle(fontSize: 16.sp, fontWeight: FontWeight.bold)),
-        elevation: 0,
-        backgroundColor: Theme.of(context).primaryColor,
-      ),
+      appBar: CustomAppBar(title: "المواد الدراسية "),
       body: BlocBuilder<SubjectsCubit, SubjectsState>(
         builder: (context, state) {
           if (state is GetSubjectsLoading) {
             return const Center(child: CircularProgressIndicator());
-          } else if (state is GetSubjectsSuccess) {
-            subjects.addAll(state.subjects);
+          } else if (state is GetSubjectsSuccess || subjects.isNotEmpty) {
+            subjects = context.read<SubjectsCubit>().subjects;
             return _buildSubjectsList(context);
           } else if (state is GetSubjectsError) {
             return Center(child: Text(state.exception.toString()));
           }
-          return const Center(child: Text('Something went wrong'));
+          return const Center(child: Text(""));
         },
       ),
     );
@@ -51,7 +54,7 @@ class _SubjectsScreenState extends State<SubjectsScreen> {
       onRefresh: () => context.read<SubjectsCubit>().getSubjects(),
       child: subjects.isEmpty
           ? Center(
-              child: Text('No subjects available.',
+              child: Text('لا يوجد مواد دراسية',
                   style: Theme.of(context).textTheme.bodyMedium))
           : ListView.builder(
               padding: EdgeInsets.symmetric(horizontal: 4.w, vertical: 2.h),
@@ -148,11 +151,10 @@ class SubjectCard extends StatelessWidget {
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
                   Expanded(
-                    // Wrap ProgressBar with Expanded
                     child: Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
-                        Text('Progress: ${subject.progress}%',
+                        Text('تقدم: ${subject.progress}%',
                             style: Theme.of(context).textTheme.labelSmall),
                         SizedBox(height: 0.5.h),
                         LinearProgressIndicator(

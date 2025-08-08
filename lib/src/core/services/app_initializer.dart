@@ -1,20 +1,12 @@
 import 'dart:developer';
-
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart' show SystemChrome, DeviceOrientation;
-import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:sunnah_academy/src/core/apis/api.dart' show ApiManager;
 import 'package:sunnah_academy/src/core/apis/dio_helper.dart';
 import 'package:sunnah_academy/src/core/services/dep_injection.dart'
     show ServiceLocator;
 import 'package:sunnah_academy/src/core/services/secure_storage_helper.dart';
-import 'package:sunnah_academy/src/modules/student/ui/screens/profile_page.dart';
-
 import '../../modules/auth/ui/screens/login_screen.dart';
-import '../../modules/exam/cubit/exam_cubit.dart';
-import '../../modules/exam/data/repositories/exam_repository.dart';
-import '../../modules/exam/data/services/exam_remote_services.dart';
-import '../../modules/exam/ui/screens/exam_screen.dart';
 import '../../modules/subjects/ui/screens/subjects_screen.dart';
 import '../debugging/app_logger.dart';
 

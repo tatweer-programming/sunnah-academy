@@ -5,16 +5,13 @@ import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:sentry_flutter/sentry_flutter.dart';
 import 'package:sizer/sizer.dart';
 import 'package:sunnah_academy/src/core/services/app_initializer.dart';
+import 'package:sunnah_academy/src/core/services/dep_injection.dart';
 import 'package:sunnah_academy/src/core/utils/theme_manager.dart';
 import 'package:sunnah_academy/src/core/widgets/splash_screen.dart';
 import 'package:sunnah_academy/src/modules/exam/cubit/exam_cubit.dart';
 import 'package:sunnah_academy/src/modules/exam/data/repositories/exam_repository.dart';
-import 'package:sunnah_academy/src/modules/exam/data/services/exam_remote_services.dart';
-import 'package:sunnah_academy/src/modules/exam/ui/screens/exam_screen.dart';
 import 'package:sunnah_academy/src/modules/subjects/cubit/subjects_cubit.dart';
 import 'package:sunnah_academy/src/modules/subjects/data/repositories/subjects_repository.dart';
-import 'package:sunnah_academy/src/modules/subjects/data/services/subjects_services.dart';
-
 import 'generated/l10n.dart';
 
 void main() async {
@@ -47,12 +44,10 @@ class MyApp extends StatelessWidget {
     return MultiBlocProvider(
       providers: [
         BlocProvider<ExamCubit>.value(
-          value: ExamCubit(
-              examRepository:
-                  ExamRepository(remoteServices: ExamRemoteServicesImpl())),
+          value: ExamCubit(sl<ExamRepository>()),
         ),
         BlocProvider<SubjectsCubit>.value(
-          value: SubjectsCubit(SubjectsRepository(SubjectRemoteServices())),
+          value: SubjectsCubit(sl<SubjectsRepository>()),
         ),
       ],
       child: Sizer(builder: (context, orientation, deviceType) {

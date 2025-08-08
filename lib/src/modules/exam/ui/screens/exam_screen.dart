@@ -6,7 +6,8 @@ import '../../cubit/exam_cubit.dart';
 import '../widgets/exam_details_widget.dart';
 
 class ExamScreen extends StatefulWidget {
-  const ExamScreen({super.key});
+  final String examId;
+  const ExamScreen({super.key, required this.examId});
 
   @override
   State<ExamScreen> createState() => _ExamScreenState();
@@ -16,13 +17,22 @@ class _ExamScreenState extends State<ExamScreen> {
   @override
   void initState() {
     super.initState();
-    context.read<ExamCubit>().getExamDetails('68812fc01b69f349d2e85cf4');
+    context.read<ExamCubit>().getExamDetails(widget.examId);
+  }
+
+  @override
+  void didUpdateWidget(covariant ExamScreen oldWidget) {
+    super.didUpdateWidget(oldWidget);
+    context.read<ExamCubit>().getExamDetails(widget.examId);
   }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: CustomAppBar(title: 'Exam Details',),
+      appBar: CustomAppBar(
+        title: 'تفاصيل الامتحان',
+        showBack: true,
+      ),
       body: Center(
         child: Padding(
           padding: const EdgeInsets.all(16.0),
@@ -42,7 +52,7 @@ class _ExamScreenState extends State<ExamScreen> {
                         color: Colors.red, size: 60),
                     const SizedBox(height: 16),
                     Text(
-                      'Error: ${state.message}',
+                      'حدث خطأ ما',
                       textAlign: TextAlign.center,
                       style: const TextStyle(
                         color: Colors.red,
@@ -52,18 +62,18 @@ class _ExamScreenState extends State<ExamScreen> {
                     ),
                     const SizedBox(height: 24),
                     CustomButton(
-                      text: "Retry",
+                      text: 'إعادة المحاولة',
                       onPressed: () {
+                        print(widget.examId);
                         context
                             .read<ExamCubit>()
-                            .getExamDetails('68812fc01b69f349d2e85cf4');
+                            .getExamDetails("68812fc01b69f349d2e85cf4");
                       },
                     ),
                   ],
                 );
               }
-              return const SizedBox
-                  .shrink();
+              return const SizedBox.shrink();
             },
           ),
         ),
