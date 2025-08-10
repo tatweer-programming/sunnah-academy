@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:sizer/sizer.dart';
+import 'package:sunnah_academy/src/core/routing/navigation_manager.dart';
 import 'package:sunnah_academy/src/core/utils/assets_manager.dart';
 
 import '../error/exception_manager.dart';
@@ -54,7 +55,6 @@ class CustomLoadingWidget extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-
     return Center(
       child: CircularProgressIndicator(),
     );
@@ -101,3 +101,16 @@ void showToast(String message) {
     gravity: ToastGravity.BOTTOM,
   );
 }
+
+Widget backButton(BuildContext context) => GestureDetector(
+      onTap: () => context.pop(),
+      child: Container(
+        padding: EdgeInsets.symmetric(horizontal: 1.w, vertical: 0.5.h),
+        decoration: BoxDecoration(
+          color: Colors.white24,
+          borderRadius: BorderRadius.circular(10),
+        ),
+        child:
+            const Icon(Icons.arrow_back_ios_new, color: Colors.white, size: 20),
+      ),
+    );

@@ -15,12 +15,8 @@ final class GetSubjectsLoading extends SubjectsState {
 }
 
 final class GetSubjectsSuccess extends SubjectsState {
-  final List<Subject> subjects;
-
-  const GetSubjectsSuccess(this.subjects);
-
   @override
-  List<Object> get props => [subjects];
+  List<Object> get props => [];
 }
 
 final class GetSubjectsError extends SubjectsState {

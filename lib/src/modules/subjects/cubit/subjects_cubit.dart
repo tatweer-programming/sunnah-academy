@@ -13,7 +13,7 @@ class SubjectsCubit extends Cubit<SubjectsState> {
     final result = await _repository.getSubjects();
     result.fold((exception) => emit(GetSubjectsError(exception)), (subjects) {
       this.subjects = subjects;
-      emit(GetSubjectsSuccess(subjects));
+      emit(GetSubjectsSuccess());
     });
   }
 }

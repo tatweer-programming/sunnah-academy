@@ -2,9 +2,12 @@ import 'package:flutter/material.dart';
 import 'package:sizer/sizer.dart';
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:sunnah_academy/src/core/routing/navigation_manager.dart';
+import 'package:sunnah_academy/src/core/widgets/custom_button.dart';
 
+import '../../../../core/widgets/core_widgets.dart';
 import '../../data/models/lecture.dart';
 import '../../data/models/subject.dart';
+import '../widgets/pdf_viewer.dart';
 import 'lecture_details_screen.dart';
 
 class SubjectDetailScreen extends StatelessWidget {
@@ -18,6 +21,7 @@ class SubjectDetailScreen extends StatelessWidget {
       body: CustomScrollView(
         slivers: [
           SliverAppBar(
+            leading: backButton(context),
             expandedHeight: 30.h, // Responsive height
             pinned: true,
             flexibleSpace: FlexibleSpaceBar(
@@ -31,7 +35,7 @@ class SubjectDetailScreen extends StatelessWidget {
                 overflow: TextOverflow.ellipsis,
               ),
               background: Hero(
-                tag: 'subjectImage_${subject.id}', // Unique tag
+                tag: subject.id,
                 child: CachedNetworkImage(
                   imageUrl: subject.imageUrl,
                   fit: BoxFit.cover,
@@ -59,33 +63,33 @@ class SubjectDetailScreen extends StatelessWidget {
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  Text('', style: Theme.of(context).textTheme.headlineSmall),
-                  SizedBox(height: 1.h),
                   Text(subject.description,
                       style: Theme.of(context).textTheme.bodyMedium),
                   SizedBox(height: 2.h),
-                  _buildInfoRow(
-                      context,
-                      Icons.bar_chart,
-                      'التقدم: ${subject.progress}%',
-                      subject.isCompleted ? ' (تم)' : 'لم يتم'),
+                  _buildInfoRow(context,
+                      icon: Icons.bar_chart,
+                      title: 'التقدم: ${subject.progress}%',
+                      value: Text(
+                        subject.isCompleted ? ' (تم)' : 'لم يتم',
+                      )),
                   SizedBox(height: 1.h),
-                  // _buildInfoRow(context, Icons.rule_sharp, 'الأمتحانات:',
-                  //     subject.completionCondition.type),
                   if (subject.bookUrl != null &&
                       subject.bookUrl!.isNotEmpty) ...[
                     SizedBox(height: 1.h),
-                    _buildInfoRow(
-                      context,
-                      Icons.menu_book,
-                      'مراجع:',
-                      subject.bookUrl!,
-                      isLink: true,
-                      onTap: () {
-                        // await canLaunchUrl(Uri.parse(subject.bookUrl!))
-                        //     ? await launchUrl(Uri.parse(subject.bookUrl!))
-                        //     : throw 'Could not launch ${subject.bookUrl}';
-                      },
+                    InkWell(
+                      child: _buildInfoRow(
+                        context,
+                        icon: Icons.menu_book,
+                        title: 'مراجع:',
+                        value: TextButton(
+                          onPressed: () {
+                            context.push(PdfViewerScreen(
+                                pdfUrl:
+                                    "https://s24.q4cdn.com/216390268/files/doc_downloads/test.pdf"));
+                          },
+                          child: Text("عرص الكتاب"),
+                        ),
+                      ),
                     ),
                   ],
                   SizedBox(height: 3.h),
@@ -123,28 +127,28 @@ class SubjectDetailScreen extends StatelessWidget {
   }
 
   Widget _buildInfoRow(
-      BuildContext context, IconData icon, String title, String value,
-      {bool isLink = false, VoidCallback? onTap}) {
+    BuildContext context, {
+    required IconData icon,
+    required String title,
+    required Widget value,
+  }) {
     return Row(
       crossAxisAlignment: CrossAxisAlignment.center,
       children: [
-        Icon(icon, size: 20.sp, color: Theme.of(context).primaryColor),
-        SizedBox(width: 2.w),
-        Text('$title ', style: Theme.of(context).textTheme.titleMedium),
-        Expanded(
-          child: GestureDetector(
-            onTap: isLink ? onTap : null,
-            child: Text(
-              value,
-              style: Theme.of(context).textTheme.bodyMedium?.copyWith(
-                    color: isLink
-                        ? Colors.blueAccent
-                        : Theme.of(context).textTheme.bodyMedium?.color,
-                    decoration: isLink ? TextDecoration.underline : null,
-                  ),
+        Row(
+          children: [
+            Icon(icon, size: 22.sp, color: Theme.of(context).primaryColor),
+            SizedBox(width: 2.w),
+            Text(
+              title,
+              style: Theme.of(context)
+                  .textTheme
+                  .titleMedium
+                  ?.copyWith(fontSize: 18.sp),
             ),
-          ),
+          ],
         ),
+        value,
       ],
     );
   }

@@ -3,6 +3,7 @@ import 'package:sizer/sizer.dart';
 import 'package:sunnah_academy/src/core/routing/navigation_manager.dart';
 import 'package:sunnah_academy/src/core/widgets/custom_app_bar.dart';
 import 'package:sunnah_academy/src/modules/exam/ui/screens/exam_screen.dart';
+import 'package:sunnah_academy/src/modules/subjects/ui/screens/pdf_lecture_screen.dart';
 import 'package:sunnah_academy/src/modules/subjects/ui/screens/video_lecture_screen.dart';
 
 import '../../data/models/completion_condition/completion_condition.dart';
@@ -26,7 +27,9 @@ class LectureDetailScreen extends StatelessWidget {
           lecture: lecture,
         );
       case 'pdf':
-        return Container();
+        return PdfLectureScreen(
+          lecture: lecture,
+        );
       default:
         return Container(
           padding: EdgeInsets.all(4.w),
@@ -46,6 +49,7 @@ class LectureDetailScreen extends StatelessWidget {
     return Scaffold(
       appBar: CustomAppBar(
         title: lecture.name,
+        showBack: true,
       ),
       body: SingleChildScrollView(
         child: Column(
