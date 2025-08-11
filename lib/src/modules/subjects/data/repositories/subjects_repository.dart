@@ -24,7 +24,7 @@ class SubjectsRepository {
   }
 
   Future<Either<Exception, Unit>> completeLecture({
-    required int lectureId,
+    required String lectureId,
   }) async {
     return await _remoteServices.completeLecture(lectureId: lectureId);
   }

@@ -55,3 +55,31 @@ final class MarkLectureCompleteError extends SubjectsState {
   @override
   List<Object> get props => [lectureId, exception];
 }
+
+final class CompleteLectureLoading extends SubjectsState {
+  final String lectureId;
+
+  const CompleteLectureLoading(this.lectureId);
+
+  @override
+  List<Object> get props => [lectureId];
+}
+
+final class CompleteLectureSuccess extends SubjectsState {
+  final String lectureId;
+
+  const CompleteLectureSuccess(this.lectureId);
+
+  @override
+  List<Object> get props => [lectureId];
+}
+
+final class CompleteLectureError extends SubjectsState {
+  final String lectureId;
+  final Exception exception;
+
+  const CompleteLectureError(this.lectureId, this.exception);
+
+  @override
+  List<Object> get props => [lectureId, exception];
+}

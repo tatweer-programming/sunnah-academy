@@ -3,7 +3,10 @@ import 'dart:io';
 
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_pdfview/flutter_pdfview.dart';
+import 'package:sunnah_academy/src/core/routing/navigation_manager.dart';
+import 'package:sunnah_academy/src/modules/subjects/cubit/subjects_cubit.dart';
 
 import '../../data/models/lecture.dart' show Lecture;
 import '../widgets/completion_button.dart';
@@ -37,26 +40,8 @@ class _PdfLectureScreenState extends State<PdfLectureScreen> {
   Future<void> _downloadAndLoadPdf() async {}
 
   Future<void> _markAsCompleted() async {
-    setState(() {
-      _isCompletionLoading = true;
-    });
-
-    // Simulate API call
-    await Future.delayed(const Duration(seconds: 1));
-
-    // widget.lecture.markAsCompleted();
-
-    setState(() {
-      _isCompletionLoading = false;
-    });
-
-    if (mounted) {
-      ScaffoldMessenger.of(context).showSnackBar(
-        const SnackBar(
-          content: Text('تم تحديد المحاضرة كمكتملة'),
-        ),
-      );
-    }
+    context.read<SubjectsCubit>().completeLecture(lectureId: widget.lecture.id);
+    context.pop();
   }
 
   void _toggleFullScreen() {
@@ -116,10 +101,13 @@ class _PdfLectureScreenState extends State<PdfLectureScreen> {
             padding: const EdgeInsets.all(16),
             child: LectureHeader(
               lecture: widget.lecture,
-              actionButton: CompletionButton(
-                lecture: widget.lecture,
-                onComplete: _markAsCompleted,
-                isLoading: _isCompletionLoading,
+              actionButton: BlocBuilder<SubjectsCubit, SubjectsState>(
+                builder: (context, state) {
+                  return CompletionButton(
+                      lecture: widget.lecture,
+                      onComplete: _markAsCompleted,
+                      isLoading: state is CompleteLectureLoading);
+                },
               ),
             ),
           ),

@@ -1,4 +1,5 @@
 import 'package:bloc/bloc.dart';
+import 'package:flutter/foundation.dart';
 import 'package:sunnah_academy/src/core/apis/dio_helper.dart';
 
 import 'bloc_observer.dart';
@@ -9,9 +10,10 @@ import 'bloc_observer.dart';
 
 class AppLogger {
   static void init() {
-    // Initialize BlocObserver to observe all bloc state changes
-    Bloc.observer = MyBlocObserver();
-    DioHelper
-        .addLogger(); // Add logger to DioHelper to log all HTTP requests and responses
+    if (kDebugMode) {
+      Bloc.observer = MyBlocObserver();
+      DioHelper
+          .addLogger(); // Add logger to DioHelper to log all HTTP requests and responses
+    }
   }
 }

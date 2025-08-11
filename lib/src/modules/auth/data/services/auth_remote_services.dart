@@ -68,9 +68,9 @@ class AuthRemoteServices {
     String newPassword,
   ) async {
     try {
-      await DioHelper.postData(path: EndPoints.resetPassword, data: {
+      await DioHelper.putData(path: EndPoints.resetPassword, data: {
         "newPassword": newPassword,
-        "id": verificationId,
+        "id": "688630ef520b70177c51d650",
       });
       return const Right(unit);
     } on Exception catch (e) {

@@ -78,9 +78,7 @@ class AuthCubit extends Cubit<AuthState> {
 
   Future<void> logout() async {
     emit(AuthLoading());
-
     final result = await _authRepository.logout();
-
     result.fold(
       (exception) => emit(AuthError(exception)),
       (success) => emit(AuthInitial()),

@@ -3,9 +3,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:sizer/sizer.dart';
 import 'package:sunnah_academy/src/core/routing/navigation_manager.dart';
-import 'package:sunnah_academy/src/core/widgets/custom_app_bar.dart';
+import 'package:sunnah_academy/src/modules/main/ui/screens/main_screen.dart';
 
-import '../../../subjects/ui/screens/subjects_screen.dart';
 import '../../cubit/exam_cubit.dart';
 import '../../data/models/exam.dart';
 import '../../data/models/question.dart';
@@ -26,8 +25,8 @@ class ExamQuestionsScreen extends StatelessWidget {
     return PopScope(
       canPop: false,
       child: Scaffold(
-        appBar: CustomAppBar(
-          title: exam.title,
+        appBar: AppBar(
+          title: Text(exam.title),
         ),
         body: BlocConsumer<ExamCubit, ExamState>(
           listener: _handleStateChanges,
@@ -44,14 +43,14 @@ class ExamQuestionsScreen extends StatelessWidget {
           content: Text(state.message),
         ),
       );
-      context.pushAndRemove(SubjectsScreen());
+      context.pushAndRemove(MainScreen());
     } else if (state is ExamSubmissionError) {
       ScaffoldMessenger.of(context).showSnackBar(
         SnackBar(
           content: Text(state.message),
         ),
       );
-      context.pushAndRemove(SubjectsScreen());
+      context.pushAndRemove(MainScreen());
     }
   }
 

@@ -1,6 +1,9 @@
 // lib/src/modules/subjects/presentation/screens/audio_lecture_screen.dart
 import 'package:audioplayers/audioplayers.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:sunnah_academy/src/core/routing/navigation_manager.dart';
+import 'package:sunnah_academy/src/modules/subjects/cubit/subjects_cubit.dart';
 
 import '../../data/models/lecture.dart';
 import '../widgets/completion_button.dart';
@@ -119,26 +122,8 @@ class _AudioLectureScreenState extends State<AudioLectureScreen> {
   }
 
   Future<void> _markAsCompleted() async {
-    setState(() {
-      _isCompletionLoading = true;
-    });
-
-    // Simulate API call
-    await Future.delayed(const Duration(seconds: 1));
-
-    // widget.lecture.markAsCompleted();
-
-    setState(() {
-      _isCompletionLoading = false;
-    });
-
-    if (mounted) {
-      ScaffoldMessenger.of(context).showSnackBar(
-        const SnackBar(
-          content: Text('تم تحديد المحاضرة كمكتملة'),
-        ),
-      );
-    }
+    context.read<SubjectsCubit>().completeLecture(lectureId: widget.lecture.id);
+    context.pop();
   }
 
   String _formatDuration(Duration duration) {
@@ -162,154 +147,157 @@ class _AudioLectureScreenState extends State<AudioLectureScreen> {
   @override
   Widget build(BuildContext context) {
     return Padding(
-        padding: const EdgeInsets.all(16),
-        child: Column(
-          children: [
-            LectureHeader(
-              lecture: widget.lecture,
-              actionButton: CompletionButton(
-                lecture: widget.lecture,
-                onComplete: _markAsCompleted,
-                isLoading: _isCompletionLoading,
-              ),
+      padding: const EdgeInsets.all(16),
+      child: Column(
+        children: [
+          LectureHeader(
+            lecture: widget.lecture,
+            actionButton: BlocBuilder<SubjectsCubit, SubjectsState>(
+              builder: (context, state) {
+                return CompletionButton(
+                    lecture: widget.lecture,
+                    onComplete: _markAsCompleted,
+                    isLoading: state is CompleteLectureLoading);
+              },
             ),
-            const SizedBox(height: 32),
-            Expanded(
-              child: Center(
-                child: Column(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  children: [
-                    // Audio Icon
-                    Container(
-                      width: 150,
-                      height: 150,
-                      decoration: BoxDecoration(
-                        color: Theme.of(context)
-                            .colorScheme
-                            .primary
-                            .withOpacity(0.1),
-                        borderRadius: BorderRadius.circular(75),
-                      ),
-                      child: Icon(
-                        Icons.headphones,
-                        size: 80,
-                        color: Theme.of(context).colorScheme.primary,
-                      ),
+          ),
+          const SizedBox(height: 32),
+          Expanded(
+            child: Center(
+              child: Column(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  // Audio Icon
+                  Container(
+                    width: 150,
+                    height: 150,
+                    decoration: BoxDecoration(
+                      color: Theme.of(context)
+                          .colorScheme
+                          .primary
+                          .withOpacity(0.1),
+                      borderRadius: BorderRadius.circular(75),
                     ),
-                    const SizedBox(height: 32),
-
-                    // Progress Bar
-                    Column(
-                      children: [
-                        Slider(
-                          value: _position.inSeconds.toDouble(),
-                          max: _duration.inSeconds.toDouble(),
-                          onChanged: (value) {
-                            _seekTo(Duration(seconds: value.toInt()));
-                          },
-                        ),
-                        Padding(
-                          padding: const EdgeInsets.symmetric(horizontal: 16),
-                          child: Row(
-                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                            children: [
-                              Text(
-                                _formatDuration(_position),
-                                style: Theme.of(context).textTheme.bodySmall,
-                              ),
-                              Text(
-                                _formatDuration(_duration),
-                                style: Theme.of(context).textTheme.bodySmall,
-                              ),
-                            ],
-                          ),
-                        ),
-                      ],
+                    child: Icon(
+                      Icons.headphones,
+                      size: 80,
+                      color: Theme.of(context).colorScheme.primary,
                     ),
+                  ),
+                  const SizedBox(height: 32),
 
-                    const SizedBox(height: 24),
-
-                    // Control Buttons
-                    Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                      children: [
-                        IconButton(
-                          onPressed: _seekBackward,
-                          icon: const Icon(Icons.replay_10),
-                          iconSize: 32,
+                  // Progress Bar
+                  Column(
+                    children: [
+                      Slider(
+                        value: _position.inSeconds.toDouble(),
+                        max: _duration.inSeconds.toDouble(),
+                        onChanged: (value) {
+                          _seekTo(Duration(seconds: value.toInt()));
+                        },
+                      ),
+                      Padding(
+                        padding: const EdgeInsets.symmetric(horizontal: 16),
+                        child: Row(
+                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                          children: [
+                            Text(
+                              _formatDuration(_position),
+                              style: Theme.of(context).textTheme.bodySmall,
+                            ),
+                            Text(
+                              _formatDuration(_duration),
+                              style: Theme.of(context).textTheme.bodySmall,
+                            ),
+                          ],
                         ),
-                        Container(
-                          decoration: BoxDecoration(
-                            color: Theme.of(context).colorScheme.primary,
-                            borderRadius: BorderRadius.circular(32),
-                          ),
-                          child: IconButton(
-                            onPressed: _isLoading ? null : _playPause,
-                            icon: _isLoading
-                                ? const SizedBox(
-                                    width: 24,
-                                    height: 24,
-                                    child: CircularProgressIndicator(
-                                      strokeWidth: 2,
-                                      color: Colors.white,
-                                    ),
-                                  )
-                                : Icon(
-                                    _isPlaying ? Icons.pause : Icons.play_arrow,
+                      ),
+                    ],
+                  ),
+
+                  const SizedBox(height: 24),
+
+                  // Control Buttons
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                    children: [
+                      IconButton(
+                        onPressed: _seekBackward,
+                        icon: const Icon(Icons.replay_10),
+                        iconSize: 32,
+                      ),
+                      Container(
+                        decoration: BoxDecoration(
+                          color: Theme.of(context).colorScheme.primary,
+                          borderRadius: BorderRadius.circular(32),
+                        ),
+                        child: IconButton(
+                          onPressed: _isLoading ? null : _playPause,
+                          icon: _isLoading
+                              ? const SizedBox(
+                                  width: 24,
+                                  height: 24,
+                                  child: CircularProgressIndicator(
+                                    strokeWidth: 2,
                                     color: Colors.white,
                                   ),
-                            iconSize: 32,
-                          ),
-                        ),
-                        IconButton(
-                          onPressed: _seekForward,
-                          icon: const Icon(Icons.forward_10),
+                                )
+                              : Icon(
+                                  _isPlaying ? Icons.pause : Icons.play_arrow,
+                                  color: Colors.white,
+                                ),
                           iconSize: 32,
                         ),
-                      ],
-                    ),
+                      ),
+                      IconButton(
+                        onPressed: _seekForward,
+                        icon: const Icon(Icons.forward_10),
+                        iconSize: 32,
+                      ),
+                    ],
+                  ),
 
-                    const SizedBox(height: 24),
+                  const SizedBox(height: 24),
 
-                    // Stop Button
-                    OutlinedButton.icon(
-                      onPressed: _stop,
-                      icon: const Icon(Icons.stop),
-                      label: const Text('إيقاف'),
-                    ),
+                  // Stop Button
+                  OutlinedButton.icon(
+                    onPressed: _stop,
+                    icon: const Icon(Icons.stop),
+                    label: const Text('إيقاف'),
+                  ),
 
-                    const SizedBox(height: 24),
+                  const SizedBox(height: 24),
 
-                    // Playback Speed
-                    Row(
-                      mainAxisAlignment: MainAxisAlignment.center,
-                      children: [
-                        Text(
-                          'السرعة: ',
-                          style: Theme.of(context).textTheme.bodyMedium,
-                        ),
-                        DropdownButton<double>(
-                          value: _playbackRate,
-                          items: [0.5, 0.75, 1.0, 1.25, 1.5, 2.0]
-                              .map((rate) => DropdownMenuItem(
-                                    value: rate,
-                                    child: Text('${rate}x'),
-                                  ))
-                              .toList(),
-                          onChanged: (value) {
-                            if (value != null) {
-                              _changePlaybackRate(value);
-                            }
-                          },
-                        ),
-                      ],
-                    ),
-                  ],
-                ),
+                  // Playback Speed
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: [
+                      Text(
+                        'السرعة: ',
+                        style: Theme.of(context).textTheme.bodyMedium,
+                      ),
+                      DropdownButton<double>(
+                        value: _playbackRate,
+                        items: [0.5, 0.75, 1.0, 1.25, 1.5, 2.0]
+                            .map((rate) => DropdownMenuItem(
+                                  value: rate,
+                                  child: Text('${rate}x'),
+                                ))
+                            .toList(),
+                        onChanged: (value) {
+                          if (value != null) {
+                            _changePlaybackRate(value);
+                          }
+                        },
+                      ),
+                    ],
+                  ),
+                ],
               ),
             ),
-          ],
-        ),
-      );
+          ),
+        ],
+      ),
+    );
   }
 }

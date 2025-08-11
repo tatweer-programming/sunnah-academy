@@ -1,10 +1,16 @@
 part of 'main_cubit.dart';
 
-sealed class MainState extends Equatable {
-  const MainState();
-}
+class MainState extends Equatable {
+  final bool isDarkModeEnabled;
+  const MainState({
+    this.isDarkModeEnabled = false,
+  });
+  MainState copyWith({bool? isDarkModeEnabled}) {
+    return MainState(
+      isDarkModeEnabled: isDarkModeEnabled ?? this.isDarkModeEnabled,
+    );
+  }
 
-final class MainInitial extends MainState {
   @override
-  List<Object> get props => [];
+  List<Object> get props => [isDarkModeEnabled];
 }

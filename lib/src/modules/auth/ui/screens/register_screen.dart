@@ -4,6 +4,8 @@ import 'package:sizer/sizer.dart';
 import 'package:sunnah_academy/src/core/routing/navigation_manager.dart';
 import 'package:sunnah_academy/src/modules/auth/cubit/auth_cubit.dart';
 import 'package:sunnah_academy/src/modules/auth/data/models/student_creation_form.dart';
+import 'package:sunnah_academy/src/modules/main/ui/screens/main_screen.dart';
+
 import '../../../../core/error/exception_manager.dart';
 import '../../../../core/services/input_validator.dart';
 import '../../../../core/widgets/custom_button.dart';
@@ -11,7 +13,6 @@ import '../../../../core/widgets/custom_dropdown.dart';
 import '../../../../core/widgets/custom_text_field.dart';
 import '../../../../core/widgets/date_picker_field.dart';
 import '../../../../core/widgets/loading_overlay.dart';
-import '../../../subjects/ui/screens/subjects_screen.dart';
 import '../widgets/auth_header.dart';
 
 class RegisterScreen extends StatefulWidget {
@@ -112,7 +113,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
                   backgroundColor: theme.colorScheme.primary,
                 ),
               );
-              context.pushAndRemove(SubjectsScreen());
+              context.pushAndRemove(MainScreen());
             } else if (state is AuthError) {
               ExceptionManager.showMessage(state.exception);
             }

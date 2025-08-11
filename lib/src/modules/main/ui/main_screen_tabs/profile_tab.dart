@@ -5,19 +5,17 @@ import 'package:sunnah_academy/src/core/routing/navigation_manager.dart';
 import 'package:sunnah_academy/src/core/widgets/core_widgets.dart';
 import 'package:sunnah_academy/src/core/widgets/custom_button.dart';
 import 'package:sunnah_academy/src/modules/student/cubit/student_cubit.dart';
+import 'package:sunnah_academy/src/modules/student/data/models/student.dart';
+import 'package:sunnah_academy/src/modules/student/ui/screens/edit_profile_screen.dart';
 
-import '../../../auth/ui/screens/login_screen.dart';
-import '../../data/models/student.dart';
-import 'edit_profile_screen.dart';
-
-class ProfileScreen extends StatefulWidget {
-  const ProfileScreen({super.key});
+class ProfileTab extends StatefulWidget {
+  const ProfileTab({super.key});
 
   @override
-  State<ProfileScreen> createState() => _ProfileScreenState();
+  State<ProfileTab> createState() => _ProfileTabState();
 }
 
-class _ProfileScreenState extends State<ProfileScreen> {
+class _ProfileTabState extends State<ProfileTab> {
   late StudentCubit _studentCubit;
 
   @override
@@ -28,22 +26,18 @@ class _ProfileScreenState extends State<ProfileScreen> {
   }
 
   @override
-  void dispose() {
-    super.dispose();
-  }
-
-  @override
   Widget build(BuildContext context) {
     return BlocProvider.value(
       value: _studentCubit,
       child: Scaffold(
         appBar: AppBar(
-          title: Text('الملف الشخصي'),
+          title: const Text('الملف الشخصي'),
+          automaticallyImplyLeading: false,
           actions: [
             BlocBuilder<StudentCubit, StudentState>(
               builder: (context, state) {
                 return IconButton(
-                  icon: Icon(Icons.edit),
+                  icon: const Icon(Icons.edit),
                   onPressed: state is GetProfileSuccess
                       ? () {
                           _navigateToEditProfile(context, state.student);
@@ -62,9 +56,6 @@ class _ProfileScreenState extends State<ProfileScreen> {
           listener: (context, state) {
             if (state is StudentError) {
               ExceptionManager.showMessage(state.error);
-            } else if (state is DeleteProfileSuccess) {
-              showToast('تم حذف الحساب بنجاح');
-              context.pushAndRemove(LoginScreen());
             } else if (state is UpdateProfileSuccess) {
               // Refresh profile data after successful update
               _buildProfileContent(context, state.student);
@@ -72,7 +63,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
           },
           builder: (context, state) {
             if (state is GetProfileLoading) {
-              return CustomLoadingWidget();
+              return const CustomLoadingWidget();
             } else if (state is StudentError) {
               return CustomErrorWidget(
                 exception: state.error,
@@ -80,7 +71,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
             } else if (state is GetProfileSuccess) {
               return _buildProfileContent(context, state.student);
             }
-            return CustomLoadingWidget();
+            return const CustomLoadingWidget();
           },
         ),
       ),
@@ -88,12 +79,10 @@ class _ProfileScreenState extends State<ProfileScreen> {
   }
 
   void _navigateToEditProfile(BuildContext context, Student student) async {
-    final result = await Navigator.of(context).push(
-      MaterialPageRoute(
-        builder: (context) => BlocProvider.value(
-          value: _studentCubit,
-          child: EditProfileScreen(student: student),
-        ),
+    final result = await context.push(
+      BlocProvider.value(
+        value: _studentCubit,
+        child: EditProfileScreen(student: student),
       ),
     );
 
@@ -110,18 +99,18 @@ class _ProfileScreenState extends State<ProfileScreen> {
       onRefresh: () async {
         _studentCubit.refreshProfile();
         // Wait for the operation to complete
-        await Future.delayed(Duration(seconds: 1));
+        await Future.delayed(const Duration(seconds: 1));
       },
       child: SingleChildScrollView(
-        physics: AlwaysScrollableScrollPhysics(),
-        padding: EdgeInsets.all(16.0),
+        physics: const AlwaysScrollableScrollPhysics(),
+        padding: const EdgeInsets.all(16.0),
         child: Column(
           children: [
             // Profile Header
             Card(
               elevation: 2,
               child: Padding(
-                padding: EdgeInsets.all(20.0),
+                padding: const EdgeInsets.all(20.0),
                 child: Column(
                   children: [
                     CircleAvatar(
@@ -133,7 +122,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
                         color: theme.colorScheme.onPrimary,
                       ),
                     ),
-                    SizedBox(height: 16.0),
+                    const SizedBox(height: 16.0),
                     Text(
                       student.name,
                       style: theme.textTheme.headlineSmall?.copyWith(
@@ -141,7 +130,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
                       ),
                       textAlign: TextAlign.center,
                     ),
-                    SizedBox(height: 8.0),
+                    const SizedBox(height: 8.0),
                     Text(
                       student.email,
                       style: theme.textTheme.bodyMedium?.copyWith(
@@ -154,13 +143,13 @@ class _ProfileScreenState extends State<ProfileScreen> {
               ),
             ),
 
-            SizedBox(height: 20.0),
+            const SizedBox(height: 20.0),
 
             // Profile Information
             Card(
               elevation: 2,
               child: Padding(
-                padding: EdgeInsets.all(16.0),
+                padding: const EdgeInsets.all(16.0),
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
@@ -170,28 +159,28 @@ class _ProfileScreenState extends State<ProfileScreen> {
                         fontWeight: FontWeight.bold,
                       ),
                     ),
-                    SizedBox(height: 16.0),
+                    const SizedBox(height: 16.0),
                     _buildInfoRow(
                       context,
                       'رقم الهاتف',
                       student.phoneNumber ?? 'غير محدد',
                       Icons.phone,
                     ),
-                    SizedBox(height: 12.0),
+                    const SizedBox(height: 12.0),
                     _buildInfoRow(
                       context,
                       'الجنس',
                       student.gender ?? 'غير محدد',
                       Icons.person_outline,
                     ),
-                    SizedBox(height: 12.0),
+                    const SizedBox(height: 12.0),
                     _buildInfoRow(
                       context,
                       'تاريخ الميلاد',
                       student.birthDate ?? 'غير محدد',
                       Icons.cake,
                     ),
-                    SizedBox(height: 12.0),
+                    const SizedBox(height: 12.0),
                     _buildInfoRow(
                       context,
                       'المستوى الحالي',
@@ -203,44 +192,23 @@ class _ProfileScreenState extends State<ProfileScreen> {
               ),
             ),
 
-            SizedBox(height: 20.0),
+            const SizedBox(height: 20.0),
 
-            // Action Buttons
+            // Edit Profile Button
             Card(
               elevation: 2,
               child: Padding(
-                padding: EdgeInsets.all(16.0),
-                child: Column(
-                  children: [
-                    SizedBox(
-                      width: double.infinity,
-                      height: 50,
-                      child: CustomButton(
-                        text: 'تعديل البيانات',
-                        icon: Icons.edit,
-                        onPressed: () {
-                          _navigateToEditProfile(context, student);
-                        },
-                      ),
-                    ),
-                    SizedBox(height: 12.0),
-                    SizedBox(
-                      width: double.infinity,
-                      height: 50,
-                      child: BlocBuilder<StudentCubit, StudentState>(
-                        builder: (context, state) {
-                          return CustomButton(
-                            text: 'حذف الحساب',
-                            type: ButtonType.outlined,
-                            icon: Icons.delete_forever,
-                            isLoading: state is DeleteProfileLoading,
-                            onPressed: () =>
-                                _showDeleteConfirmationDialog(context),
-                          );
-                        },
-                      ),
-                    ),
-                  ],
+                padding: const EdgeInsets.all(16.0),
+                child: SizedBox(
+                  width: double.infinity,
+                  height: 50,
+                  child: CustomButton(
+                    text: 'تعديل البيانات',
+                    icon: Icons.edit,
+                    onPressed: () {
+                      _navigateToEditProfile(context, student);
+                    },
+                  ),
                 ),
               ),
             ),
@@ -265,7 +233,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
           color: theme.colorScheme.primary,
           size: 20,
         ),
-        SizedBox(width: 12.0),
+        const SizedBox(width: 12.0),
         Expanded(
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
@@ -277,7 +245,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
                   fontWeight: FontWeight.w500,
                 ),
               ),
-              SizedBox(height: 2.0),
+              const SizedBox(height: 2.0),
               Text(
                 value,
                 style: theme.textTheme.bodyMedium?.copyWith(
@@ -288,69 +256,6 @@ class _ProfileScreenState extends State<ProfileScreen> {
           ),
         ),
       ],
-    );
-  }
-
-  void _showDeleteConfirmationDialog(BuildContext context) {
-    final theme = Theme.of(context);
-
-    showDialog(
-      context: context,
-      barrierDismissible: false,
-      builder: (BuildContext dialogContext) {
-        return BlocProvider.value(
-          value: _studentCubit,
-          child: AlertDialog(
-            title: Row(
-              children: [
-                Icon(
-                  Icons.warning,
-                  color: theme.colorScheme.error,
-                ),
-                SizedBox(width: 8.0),
-                Expanded(child: Text('تأكيد حذف الحساب')),
-              ],
-            ),
-            content: Text(
-              'هل أنت متأكد من رغبتك في حذف حسابك؟ لا يمكن التراجع عن هذا الإجراء.',
-              style: theme.textTheme.bodyMedium,
-            ),
-            actions: [
-              TextButton(
-                onPressed: () => Navigator.of(dialogContext).pop(),
-                child: Text('إلغاء'),
-              ),
-              BlocBuilder<StudentCubit, StudentState>(
-                builder: (context, state) {
-                  return TextButton(
-                    onPressed: state is DeleteProfileLoading
-                        ? null
-                        : () {
-                            Navigator.of(dialogContext).pop();
-                            _studentCubit.deleteAccount();
-                          },
-                    style: TextButton.styleFrom(
-                      foregroundColor: theme.colorScheme.error,
-                    ),
-                    child: state is DeleteProfileLoading
-                        ? SizedBox(
-                            width: 16,
-                            height: 16,
-                            child: CircularProgressIndicator(
-                              strokeWidth: 2,
-                              valueColor: AlwaysStoppedAnimation<Color>(
-                                theme.colorScheme.error,
-                              ),
-                            ),
-                          )
-                        : Text('حذف'),
-                  );
-                },
-              ),
-            ],
-          ),
-        );
-      },
     );
   }
 }

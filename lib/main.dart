@@ -4,19 +4,23 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:sentry_flutter/sentry_flutter.dart';
 import 'package:sizer/sizer.dart';
+import 'package:sunnah_academy/src/core/debugging/loggable.dart';
 import 'package:sunnah_academy/src/core/services/app_initializer.dart';
 import 'package:sunnah_academy/src/core/services/dep_injection.dart';
 import 'package:sunnah_academy/src/core/utils/theme_manager.dart';
 import 'package:sunnah_academy/src/core/widgets/splash_screen.dart';
 import 'package:sunnah_academy/src/modules/exam/cubit/exam_cubit.dart';
 import 'package:sunnah_academy/src/modules/exam/data/repositories/exam_repository.dart';
+import 'package:sunnah_academy/src/modules/main/cubit/main_cubit.dart';
 import 'package:sunnah_academy/src/modules/subjects/cubit/subjects_cubit.dart';
 import 'package:sunnah_academy/src/modules/subjects/data/repositories/subjects_repository.dart';
+
 import 'generated/l10n.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
   AppInitializer.initializeServiceLocator();
+  await AppInitializer.initializeHydratedStorage();
 
   if (kReleaseMode) {
     await SentryFlutter.init(
@@ -49,25 +53,36 @@ class MyApp extends StatelessWidget {
         BlocProvider<SubjectsCubit>.value(
           value: SubjectsCubit(sl<SubjectsRepository>()),
         ),
+        // استخدام BlocProvider.value مع الـ singleton instance
+        BlocProvider<MainCubit>.value(
+          value: MainCubit.instance,
+        ),
       ],
       child: Sizer(builder: (context, orientation, deviceType) {
-        return MaterialApp(
-          title: 'Theme Test App',
-          theme: AppTheme.lightTheme,
-          locale: const Locale(
-            'ar',
-          ),
-          supportedLocales: const [
-            Locale('ar', ''),
-          ],
-          localizationsDelegates: const [
-            S.delegate,
-            GlobalMaterialLocalizations.delegate,
-            GlobalWidgetsLocalizations.delegate,
-            GlobalCupertinoLocalizations.delegate,
-          ],
-          home: SplashScreen(),
-          debugShowCheckedModeBanner: false,
+        return BlocBuilder<MainCubit, MainState>(
+          builder: (context, state) {
+            logInfo("darkMode: ${state.isDarkModeEnabled}");
+            return MaterialApp(
+              title: "أكاديمية السنة",
+              theme: state.isDarkModeEnabled
+                  ? AppTheme.darkTheme
+                  : AppTheme.lightTheme,
+              locale: const Locale(
+                'ar',
+              ),
+              supportedLocales: const [
+                Locale('ar', ''),
+              ],
+              localizationsDelegates: const [
+                S.delegate,
+                GlobalMaterialLocalizations.delegate,
+                GlobalWidgetsLocalizations.delegate,
+                GlobalCupertinoLocalizations.delegate,
+              ],
+              home: SplashScreen(),
+              debugShowCheckedModeBanner: false,
+            );
+          },
         );
       }),
     );

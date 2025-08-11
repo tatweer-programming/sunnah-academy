@@ -17,7 +17,7 @@ class SplashScreen extends StatelessWidget {
 
     return AnimatedSplashScreen.withScreenFunction(
       screenFunction: () async {
-        return AppInitializer.init();
+        return await AppInitializer.init();
       },
       duration: 3000,
       splashIconSize: _calculateSplashIconSize(context),

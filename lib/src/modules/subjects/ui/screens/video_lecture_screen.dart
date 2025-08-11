@@ -1,5 +1,8 @@
 import 'package:chewie/chewie.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:sunnah_academy/src/core/routing/navigation_manager.dart';
+import 'package:sunnah_academy/src/modules/subjects/cubit/subjects_cubit.dart';
 import 'package:video_player/video_player.dart';
 
 import '../../data/models/lecture.dart';
@@ -94,26 +97,8 @@ class _VideoLectureScreenState extends State<VideoLectureScreen> {
   }
 
   Future<void> _markAsCompleted() async {
-    setState(() {
-      _isCompletionLoading = true;
-    });
-
-    // Simulate API call
-    await Future.delayed(const Duration(seconds: 1));
-
-    // widget.lecture.markAsCompleted();
-
-    setState(() {
-      _isCompletionLoading = false;
-    });
-
-    if (mounted) {
-      ScaffoldMessenger.of(context).showSnackBar(
-        const SnackBar(
-          content: Text('تم تحديد المحاضرة كمكتملة'),
-        ),
-      );
-    }
+    context.read<SubjectsCubit>().completeLecture(lectureId: widget.lecture.id);
+    context.pop();
   }
 
   @override
@@ -131,10 +116,17 @@ class _VideoLectureScreenState extends State<VideoLectureScreen> {
         children: [
           LectureHeader(
             lecture: widget.lecture,
-            actionButton: CompletionButton(
-              lecture: widget.lecture,
-              onComplete: _markAsCompleted,
-              isLoading: _isCompletionLoading,
+            actionButton: BlocBuilder<SubjectsCubit, SubjectsState>(
+              builder: (context, state) {
+                return BlocBuilder<SubjectsCubit, SubjectsState>(
+                  builder: (context, state) {
+                    return CompletionButton(
+                        lecture: widget.lecture,
+                        onComplete: _markAsCompleted,
+                        isLoading: state is CompleteLectureLoading);
+                  },
+                );
+              },
             ),
           ),
           const SizedBox(height: 24),
@@ -204,40 +196,3 @@ class _VideoLectureScreenState extends State<VideoLectureScreen> {
     );
   }
 }
-
-// Dependencies to add to pubspec.yaml:
-/*
-dependencies:
-  chewie: ^1.7.4
-  video_player: ^2.8.2
-  url_launcher: ^6.2.4
-  audioplayers: ^5.2.1
-*/
-
-// Usage Example:
-/*
-// Navigate to different lecture screens based on content type
-void navigateToLectureScreen(BuildContext context, Lecture lecture) {
-  Widget screen;
-
-  switch (lecture.contentType.toLowerCase()) {
-    case 'video':
-      screen = VideoLectureScreen(lecture: lecture);
-      break;
-    case 'pdf':
-      screen = PdfLectureScreen(lecture: lecture);
-      break;
-    case 'audio':
-      screen = AudioLectureScreen(lecture: lecture);
-      break;
-    default:
-      // Handle unknown content type
-      return;
-  }
-
-  Navigator.push(
-    context,
-    MaterialPageRoute(builder: (context) => screen),
-  );
-}
-*/

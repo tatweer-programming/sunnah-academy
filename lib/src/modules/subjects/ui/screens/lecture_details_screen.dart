@@ -1,12 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:sizer/sizer.dart';
 import 'package:sunnah_academy/src/core/routing/navigation_manager.dart';
-import 'package:sunnah_academy/src/core/widgets/custom_app_bar.dart';
 import 'package:sunnah_academy/src/modules/exam/ui/screens/exam_screen.dart';
 import 'package:sunnah_academy/src/modules/subjects/ui/screens/pdf_lecture_screen.dart';
 import 'package:sunnah_academy/src/modules/subjects/ui/screens/video_lecture_screen.dart';
 
-import '../../data/models/completion_condition/completion_condition.dart';
 import '../../data/models/completion_condition/exam_condition.dart';
 import '../../data/models/lecture.dart';
 import 'audio_lecture_screen.dart';
@@ -47,9 +45,9 @@ class LectureDetailScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: CustomAppBar(
-        title: lecture.name,
-        showBack: true,
+      appBar: AppBar(
+        title: Text(lecture.name),
+        // showBack: true,
       ),
       body: SingleChildScrollView(
         child: Column(
@@ -100,9 +98,9 @@ class LectureDetailScreen extends StatelessWidget {
         Expanded(
           child: TextButton(
             onPressed: () {
-              context.push(
-                ExamScreen(examId: value.examId,)
-              );
+              context.push(ExamScreen(
+                examId: value.examId,
+              ));
             },
             child: Text(
               value.type,

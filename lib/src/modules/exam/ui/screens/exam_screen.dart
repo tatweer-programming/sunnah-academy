@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:sunnah_academy/src/core/widgets/custom_button.dart';
-import '../../../../core/widgets/custom_app_bar.dart';
+
 import '../../cubit/exam_cubit.dart';
 import '../widgets/exam_details_widget.dart';
 
@@ -29,9 +29,8 @@ class _ExamScreenState extends State<ExamScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: CustomAppBar(
-        title: 'تفاصيل الامتحان',
-        showBack: true,
+      appBar: AppBar(
+        title: Text("تفاصيل الامتجان"),
       ),
       body: Center(
         child: Padding(

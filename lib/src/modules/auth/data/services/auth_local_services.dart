@@ -4,6 +4,8 @@ import 'package:sunnah_academy/src/core/services/secure_storage_helper.dart';
 import 'package:sunnah_academy/src/modules/auth/data/models/auth_info.dart';
 import 'package:sunnah_academy/src/modules/student/data/models/student.dart';
 
+import '../../../../core/apis/dio_helper.dart';
+
 class AuthLocalServices {
   // This class can be used to manage local authentication services
   // such as saving user credentials, tokens, or preferences locally.
@@ -17,6 +19,7 @@ class AuthLocalServices {
           key: "auth_info",
           value: authInfo.toJson(),
           expiresAfter: Duration(days: 30));
+      DioHelper.setToken(ApiManager.authToken!);
       return Right(unit);
     } on Exception catch (e) {
       return Left(e);

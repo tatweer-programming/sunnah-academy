@@ -6,7 +6,7 @@ import 'package:sunnah_academy/src/modules/subjects/data/models/subject.dart';
 abstract class BaseSubjectServices {
   Future<Either<Exception, List<Subject>>> getSubjects();
 
-  Future<Either<Exception, Unit>> completeLecture({required int lectureId});
+  Future<Either<Exception, Unit>> completeLecture({required String lectureId});
 }
 
 class SubjectRemoteServices implements BaseSubjectServices {
@@ -26,7 +26,7 @@ class SubjectRemoteServices implements BaseSubjectServices {
 
   @override
   Future<Either<Exception, Unit>> completeLecture(
-      {required int lectureId}) async {
+      {required String lectureId}) async {
     try {
       await DioHelper.postData(
         path: '${EndPoints.students}/lectures/$lectureId/complete',
