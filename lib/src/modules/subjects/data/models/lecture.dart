@@ -28,6 +28,23 @@ class Lecture extends Equatable {
     );
   }
 
+  Lecture copyWith({
+    String? id,
+    String? name,
+    String? url,
+    String? contentType,
+    CompletionCondition? completionCondition,
+    bool? isComplete,
+  }) {
+    return Lecture(
+      id: id ?? this.id,
+      name: name ?? this.name,
+      url: url ?? this.url,
+      contentType: contentType ?? this.contentType,
+      completionCondition: completionCondition ?? this.completionCondition,
+      isComplete: isComplete ?? this.isComplete,
+    );
+  }
 
   @override
   List<Object?> get props => [id, name, url, contentType];
