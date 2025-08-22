@@ -18,6 +18,7 @@ class SubjectsCubit extends Cubit<SubjectsState> {
     });
   }
 
+  /// Mark lecture as completed through API
   Future<void> completeLecture({required String lectureId}) async {
     emit(CompleteLectureLoading(lectureId));
     final result = await _repository.completeLecture(lectureId: lectureId);
@@ -27,11 +28,13 @@ class SubjectsCubit extends Cubit<SubjectsState> {
     );
   }
 
+  /// Mark lecture as completed locally
   Future<void> markLectureAsCompleted({required String lectureId}) async {
     _repository.markLectureAsCompleted(lectureId: lectureId);
     emit(CompleteLectureSuccess(lectureId));
   }
 
+  /// Mark subject as completed locally
   Future<void> markSubjectAsCompleted({required String lectureId}) async {
     _repository.markSubjectAsCompleted(subjectId: lectureId);
     emit(CompleteSubjectSuccess(lectureId));

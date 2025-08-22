@@ -40,7 +40,6 @@ class _PdfLectureScreenState extends State<PdfLectureScreen> {
   Future<void> _downloadAndLoadPdf() async {}
 
   Future<void> _markAsCompleted() async {
-    context.read<SubjectsCubit>().completeLecture(lectureId: widget.lecture.id);
     context.pop();
   }
 

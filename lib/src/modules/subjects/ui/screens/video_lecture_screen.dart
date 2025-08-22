@@ -97,7 +97,6 @@ class _VideoLectureScreenState extends State<VideoLectureScreen> {
   }
 
   Future<void> _markAsCompleted() async {
-    context.read<SubjectsCubit>().completeLecture(lectureId: widget.lecture.id);
     context.pop();
   }
 

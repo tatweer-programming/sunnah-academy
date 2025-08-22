@@ -122,7 +122,6 @@ class _AudioLectureScreenState extends State<AudioLectureScreen> {
   }
 
   Future<void> _markAsCompleted() async {
-    context.read<SubjectsCubit>().completeLecture(lectureId: widget.lecture.id);
     context.pop();
   }
 
