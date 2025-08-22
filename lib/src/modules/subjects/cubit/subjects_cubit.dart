@@ -9,7 +9,7 @@ class SubjectsCubit extends Cubit<SubjectsState> {
   final SubjectsRepository _repository;
   SubjectsCubit(this._repository) : super(SubjectsInitial());
   late List<Subject> subjects = [];
-  Future<void> getSubjects() async {
+  Future<void> getSubjects({bool? forceRefresh}) async {
     emit(GetSubjectsLoading());
     final result = await _repository.getSubjects();
     result.fold((exception) => emit(GetSubjectsError(exception)), (subjects) {
@@ -25,5 +25,15 @@ class SubjectsCubit extends Cubit<SubjectsState> {
       (exception) => emit(CompleteLectureError(lectureId, exception)),
       (_) => emit(CompleteLectureSuccess(lectureId)),
     );
+  }
+
+  Future<void> markLectureAsCompleted({required String lectureId}) async {
+    _repository.markLectureAsCompleted(lectureId: lectureId);
+    emit(CompleteLectureSuccess(lectureId));
+  }
+
+  Future<void> markSubjectAsCompleted({required String lectureId}) async {
+    _repository.markSubjectAsCompleted(subjectId: lectureId);
+    emit(CompleteSubjectSuccess(lectureId));
   }
 }

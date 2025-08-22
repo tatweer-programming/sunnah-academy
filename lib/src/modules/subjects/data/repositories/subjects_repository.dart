@@ -41,4 +41,19 @@ class SubjectsRepository {
       },
     );
   }
+
+  void markLectureAsCompleted({required String lectureId}) {
+    Lecture lecture = _subjects
+        .firstWhere((subject) =>
+            subject.lectures.any((lecture) => lecture.id == lectureId))
+        .lectures
+        .firstWhere((lecture) => lecture.id == lectureId);
+    lecture = lecture.copyWith(isComplete: true);
+  }
+
+  void markSubjectAsCompleted({required String subjectId}) {
+    Subject subject =
+        _subjects.firstWhere((subject) => subject.id == subjectId);
+    subject = subject.copyWith(isCompleted: true);
+  }
 }
