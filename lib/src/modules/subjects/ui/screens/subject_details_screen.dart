@@ -3,6 +3,8 @@ import 'package:sizer/sizer.dart';
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:sunnah_academy/src/core/routing/navigation_manager.dart';
 import 'package:sunnah_academy/src/core/widgets/custom_button.dart';
+import 'package:sunnah_academy/src/modules/exam/ui/screens/exam_screen.dart';
+import 'package:sunnah_academy/src/modules/subjects/data/models/completion_condition/exam_condition.dart';
 
 import '../../../../core/widgets/core_widgets.dart';
 import '../../data/models/lecture.dart';
@@ -17,6 +19,8 @@ class SubjectDetailScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    print(subject.completionCondition.type);
+    print((subject.completionCondition as ExamCondition).examId);
     return Scaffold(
       body: CustomScrollView(
         slivers: [
@@ -70,7 +74,7 @@ class SubjectDetailScreen extends StatelessWidget {
                       icon: Icons.bar_chart,
                       title: 'التقدم: ${subject.progress}%',
                       value: Text(
-                        subject.isCompleted ? ' (تم)' : 'لم يتم',
+                        subject.isCompleted ? ' (تم) ' : ' لم يتم ',
                       )),
                   SizedBox(height: 1.h),
                   if (subject.bookUrl != null &&
@@ -91,6 +95,27 @@ class SubjectDetailScreen extends StatelessWidget {
                         ),
                       ),
                     ),
+                    if (subject.completionCondition is ExamCondition)
+                      InkWell(
+                        child: _buildInfoRow(
+                          context,
+                          icon: Icons.question_mark_sharp,
+                          title: 'امتحان: ',
+                          value: TextButton(
+                            onPressed: () {
+                              context.push(ExamScreen(
+                                  examCondition: ExamCondition(
+                                      examId: (subject.completionCondition
+                                              as ExamCondition)
+                                          .examId,
+                                      examConditionType: ExamConditionDetail(
+                                          value: subject.id,
+                                          type: ExamConditionType.subject))));
+                            },
+                            child: Text("عرص الامتحان"),
+                          ),
+                        ),
+                      ),
                   ],
                   SizedBox(height: 3.h),
                   Text('المحاضرات (${subject.lectures.length})',

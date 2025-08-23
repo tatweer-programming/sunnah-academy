@@ -99,7 +99,10 @@ class LectureDetailScreen extends StatelessWidget {
           child: TextButton(
             onPressed: () {
               context.push(ExamScreen(
-                examId: value.examId,
+                examCondition: ExamCondition(
+                    examId: value.examId,
+                  examConditionType: ExamConditionDetail(value: lecture.id, type: ExamConditionType.lecture),
+                ),
               ));
             },
             child: Text(

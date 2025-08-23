@@ -30,7 +30,15 @@ class ExamRemoteServices implements BaseExamServices {
     try {
       final response = await DioHelper.postData(
           path: EndPoints.getExams + request.examId + EndPoints.submitExam, data: request.toJson());
-      final String result = response.data['message'];
+      print(response.data);
+      final String? result = response.data['message'];
+      if (result == null) {
+        return Left(DioException(
+          response: response,
+          requestOptions: response.requestOptions,
+          error: 'No message received',
+        ));
+      }
       return Right(result);
     } on DioException catch (e) {
       return Left(e);

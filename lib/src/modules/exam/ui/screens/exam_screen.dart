@@ -1,13 +1,14 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:sunnah_academy/src/core/widgets/custom_button.dart';
+import 'package:sunnah_academy/src/modules/subjects/data/models/completion_condition/exam_condition.dart';
 
 import '../../cubit/exam_cubit.dart';
 import '../widgets/exam_details_widget.dart';
 
 class ExamScreen extends StatefulWidget {
-  final String examId;
-  const ExamScreen({super.key, required this.examId});
+  final ExamCondition examCondition;
+  const ExamScreen({super.key, required this.examCondition});
 
   @override
   State<ExamScreen> createState() => _ExamScreenState();
@@ -17,13 +18,13 @@ class _ExamScreenState extends State<ExamScreen> {
   @override
   void initState() {
     super.initState();
-    context.read<ExamCubit>().getExamDetails(widget.examId);
+    context.read<ExamCubit>().getExamDetails(widget.examCondition.examId);
   }
 
   @override
   void didUpdateWidget(covariant ExamScreen oldWidget) {
     super.didUpdateWidget(oldWidget);
-    context.read<ExamCubit>().getExamDetails(widget.examId);
+    context.read<ExamCubit>().getExamDetails(widget.examCondition.examId);
   }
 
   @override
@@ -42,7 +43,8 @@ class _ExamScreenState extends State<ExamScreen> {
                   valueColor: AlwaysStoppedAnimation<Color>(Colors.blueAccent),
                 );
               } else if (state is ExamLoaded) {
-                return ExamDetailsWidget(exam: state.exam);
+                return ExamDetailsWidget(
+                    exam: state.exam, examCondition: widget.examCondition);
               } else if (state is ExamError) {
                 return Column(
                   mainAxisAlignment: MainAxisAlignment.center,
@@ -63,7 +65,7 @@ class _ExamScreenState extends State<ExamScreen> {
                     CustomButton(
                       text: 'إعادة المحاولة',
                       onPressed: () {
-                        print(widget.examId);
+                        print(widget.examCondition);
                         context
                             .read<ExamCubit>()
                             .getExamDetails("68812fc01b69f349d2e85cf4");

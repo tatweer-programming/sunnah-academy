@@ -130,9 +130,9 @@ class _ExamInProgressWidget extends StatelessWidget {
   void _handleButtonPress(BuildContext context, NavigationType navigationType) {
     final cubit = context.read<ExamCubit>();
     if (navigationType == NavigationType.finish) {
-      cubit.submitAnswers();
+      cubit.submitAnswers(context);
     } else {
-      cubit.nextQuestion(navigationType);
+      cubit.nextQuestion(navigationType,context);
     }
   }
 

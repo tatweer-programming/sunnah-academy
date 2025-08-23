@@ -35,8 +35,8 @@ class SubjectsCubit extends Cubit<SubjectsState> {
   }
 
   /// Mark subject as completed locally
-  Future<void> markSubjectAsCompleted({required String lectureId}) async {
-    _repository.markSubjectAsCompleted(subjectId: lectureId);
-    emit(CompleteSubjectSuccess(lectureId));
+  Future<void> markSubjectAsCompleted({required String subjectId}) async {
+    _repository.markSubjectAsCompleted(subjectId: subjectId);
+    emit(CompleteSubjectSuccess(subjectId));
   }
 }
