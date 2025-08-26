@@ -2,16 +2,18 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:sunnah_academy/src/core/routing/navigation_manager.dart';
 
+import '../../../subjects/data/models/completion_condition/exam_condition.dart';
 import '../../cubit/exam_cubit.dart';
 import '../../data/models/exam.dart';
 import '../screens/exam_questions_screen.dart';
 
 class ExamDetailsWidget extends StatelessWidget {
   final Exam exam;
+  final ExamCondition examCondition;
 
   const ExamDetailsWidget({
     super.key,
-    required this.exam,
+    required this.exam, required this.examCondition,
   });
 
   @override
@@ -85,7 +87,7 @@ class ExamDetailsWidget extends StatelessWidget {
                   Center(
                     child: ElevatedButton.icon(
                       onPressed: () {
-                        context.read<ExamCubit>().startExam(exam);
+                        context.read<ExamCubit>().startExam(exam,examCondition);
                         context.push(ExamQuestionsScreen(exam: exam,));
                       },
                       icon: const Icon(Icons.play_arrow, color: Colors.white, size: 30),

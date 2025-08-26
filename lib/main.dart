@@ -73,6 +73,8 @@ class MyApp extends StatelessWidget {
               supportedLocales: const [
                 Locale('ar', ''),
               ],
+              themeAnimationCurve: Curves.fastOutSlowIn,
+              themeAnimationDuration: const Duration(milliseconds: 500),
               localizationsDelegates: const [
                 S.delegate,
                 GlobalMaterialLocalizations.delegate,

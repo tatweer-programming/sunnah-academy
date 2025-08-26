@@ -14,7 +14,7 @@ class SubjectRemoteServices implements BaseSubjectServices {
   Future<Either<Exception, List<Subject>>> getSubjects() async {
     try {
       final response = await DioHelper.getData(path: EndPoints.subjects);
-
+print(response.data);
       final List data = response.data['data']['subjects'];
       final List<Subject> subjects =
           data.map((json) => Subject.fromJson(json)).toList();
