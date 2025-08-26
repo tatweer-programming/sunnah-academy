@@ -6,7 +6,9 @@ import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_pdfview/flutter_pdfview.dart';
 import 'package:sunnah_academy/src/core/routing/navigation_manager.dart';
+import 'package:sunnah_academy/src/modules/exam/ui/screens/exam_screen.dart';
 import 'package:sunnah_academy/src/modules/subjects/cubit/subjects_cubit.dart';
+import 'package:sunnah_academy/src/modules/subjects/data/models/completion_condition/exam_condition.dart';
 
 import '../../data/models/lecture.dart' show Lecture;
 import '../widgets/completion_button.dart';
@@ -40,7 +42,17 @@ class _PdfLectureScreenState extends State<PdfLectureScreen> {
   Future<void> _downloadAndLoadPdf() async {}
 
   Future<void> _markAsCompleted() async {
-    context.pop();
+    if (widget.lecture.completionCondition != null) {
+      ExamCondition examCondition =
+          widget.lecture.completionCondition as ExamCondition;
+      context.push(ExamScreen(
+        examId: examCondition.examId,
+      ));
+    } else {
+      context
+          .read<SubjectsCubit>()
+          .completeLecture(lectureId: widget.lecture.id);
+    }
   }
 
   void _toggleFullScreen() {

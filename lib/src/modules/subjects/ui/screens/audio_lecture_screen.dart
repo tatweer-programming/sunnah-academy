@@ -3,7 +3,9 @@ import 'package:audioplayers/audioplayers.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:sunnah_academy/src/core/routing/navigation_manager.dart';
+import 'package:sunnah_academy/src/modules/exam/ui/screens/exam_screen.dart';
 import 'package:sunnah_academy/src/modules/subjects/cubit/subjects_cubit.dart';
+import 'package:sunnah_academy/src/modules/subjects/data/models/completion_condition/exam_condition.dart';
 
 import '../../data/models/lecture.dart';
 import '../widgets/completion_button.dart';
@@ -122,7 +124,17 @@ class _AudioLectureScreenState extends State<AudioLectureScreen> {
   }
 
   Future<void> _markAsCompleted() async {
-    context.pop();
+    if (widget.lecture.completionCondition != null) {
+      ExamCondition examCondition =
+          widget.lecture.completionCondition as ExamCondition;
+      context.push(ExamScreen(
+        examId: examCondition.examId,
+      ));
+    } else {
+      context
+          .read<SubjectsCubit>()
+          .completeLecture(lectureId: widget.lecture.id);
+    }
   }
 
   String _formatDuration(Duration duration) {

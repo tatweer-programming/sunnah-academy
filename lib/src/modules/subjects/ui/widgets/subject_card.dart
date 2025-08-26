@@ -43,7 +43,7 @@ class SubjectCard extends StatelessWidget {
               child: InkWell(
                 borderRadius: BorderRadius.circular(20.0),
                 onTap: () {
-                  context.push(SubjectDetailScreen(subject: subject));
+                  context.push(SubjectDetailScreen(subjectId: subject.id));
                 },
                 child: Padding(
                   padding: EdgeInsets.all(5.w),
@@ -340,7 +340,7 @@ class SubjectMosqueCard extends StatelessWidget {
           elevation: theme.cardTheme.elevation ?? 3,
           child: InkWell(
             onTap: () {
-              context.push(SubjectDetailScreen(subject: subject));
+              context.push(SubjectDetailScreen(subjectId: subject.id));
             },
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.stretch,

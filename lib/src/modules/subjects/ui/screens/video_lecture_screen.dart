@@ -2,12 +2,14 @@ import 'package:chewie/chewie.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:sunnah_academy/src/core/routing/navigation_manager.dart';
+import 'package:sunnah_academy/src/modules/exam/ui/screens/exam_screen.dart';
 import 'package:sunnah_academy/src/modules/subjects/cubit/subjects_cubit.dart';
+import 'package:sunnah_academy/src/modules/subjects/data/models/completion_condition/exam_condition.dart';
+import 'package:sunnah_academy/src/modules/subjects/ui/widgets/completion_button.dart';
+import 'package:sunnah_academy/src/modules/subjects/ui/widgets/lecture_header.dart';
 import 'package:video_player/video_player.dart';
 
 import '../../data/models/lecture.dart';
-import '../widgets/completion_button.dart';
-import '../widgets/lecture_header.dart';
 
 class VideoLectureScreen extends StatefulWidget {
   final Lecture lecture;
@@ -97,7 +99,17 @@ class _VideoLectureScreenState extends State<VideoLectureScreen> {
   }
 
   Future<void> _markAsCompleted() async {
-    context.pop();
+    if (widget.lecture.completionCondition != null) {
+      ExamCondition examCondition =
+          widget.lecture.completionCondition as ExamCondition;
+      context.push(ExamScreen(
+        examId: examCondition.examId,
+      ));
+    } else {
+      context
+          .read<SubjectsCubit>()
+          .completeLecture(lectureId: widget.lecture.id);
+    }
   }
 
   @override
@@ -119,6 +131,9 @@ class _VideoLectureScreenState extends State<VideoLectureScreen> {
               builder: (context, state) {
                 return BlocBuilder<SubjectsCubit, SubjectsState>(
                   builder: (context, state) {
+                    if (widget.lecture.isComplete) {
+                      return const SizedBox.shrink();
+                    }
                     return CompletionButton(
                         lecture: widget.lecture,
                         onComplete: _markAsCompleted,

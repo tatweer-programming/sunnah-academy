@@ -1,11 +1,14 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:sizer/sizer.dart';
 import 'package:sunnah_academy/src/core/routing/navigation_manager.dart';
-import 'package:sunnah_academy/src/modules/exam/ui/screens/exam_screen.dart';
+import 'package:sunnah_academy/src/modules/exam/cubit/exam_cubit.dart';
+import 'package:sunnah_academy/src/modules/subjects/cubit/subjects_cubit.dart';
+import 'package:sunnah_academy/src/modules/subjects/data/models/completion_condition/completion_condition.dart';
+import 'package:sunnah_academy/src/modules/subjects/data/models/completion_condition/exam_condition.dart';
 import 'package:sunnah_academy/src/modules/subjects/ui/screens/pdf_lecture_screen.dart';
 import 'package:sunnah_academy/src/modules/subjects/ui/screens/video_lecture_screen.dart';
 
-import '../../data/models/completion_condition/exam_condition.dart';
 import '../../data/models/lecture.dart';
 import 'audio_lecture_screen.dart';
 
@@ -53,67 +56,33 @@ class LectureDetailScreen extends StatelessWidget {
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            _buildContentArea(context),
-            Padding(
-              padding: EdgeInsets.all(4.w),
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  if (lecture.completionCondition != null) ...[
-                    SizedBox(height: 1.5.h),
-                    _buildDetailRow(
-                      context,
-                      icon: Icons.rule_sharp,
-                      label: 'لإنهاء المحاضرة:',
-                      value: lecture.completionCondition! as ExamCondition,
-                    ),
-                  ],
-                ],
+            BlocListener<ExamCubit, ExamState>(
+              listener: (context, state) {
+                if (state is ExamPassed) {
+                  CompletionCondition? completionCondition =
+                      lecture.completionCondition;
+                  if (completionCondition is ExamCondition) {
+                    if (completionCondition.examId == state.examId) {
+                      context
+                          .read<SubjectsCubit>()
+                          .markLectureAsCompleted(lectureId: lecture.id);
+                      context.pop();
+                    }
+                  }
+                }
+              },
+              child: BlocListener<SubjectsCubit, SubjectsState>(
+                listener: (context, state) {
+                  if (state is CompleteLectureSuccess) {
+                    context.pop();
+                  }
+                },
+                child: _buildContentArea(context),
               ),
             ),
           ],
         ),
       ),
-    );
-  }
-
-  Widget _buildDetailRow(BuildContext context,
-      {required IconData icon,
-      required String label,
-      required ExamCondition value,
-      Color? valueColor}) {
-    return Row(
-      crossAxisAlignment: CrossAxisAlignment.center,
-      children: [
-        Icon(icon, size: 22.sp, color: Theme.of(context).primaryColorDark),
-        SizedBox(width: 2.w),
-        Text(
-          label,
-          style: Theme.of(context)
-              .textTheme
-              .titleMedium
-              ?.copyWith(fontSize: 18.sp),
-        ),
-        SizedBox(width: 1.w),
-        Expanded(
-          child: TextButton(
-            onPressed: () {
-              context.push(ExamScreen(
-                examId: value.examId,
-              ));
-            },
-            child: Text(
-              value.type,
-              style: Theme.of(context).textTheme.bodyMedium?.copyWith(
-                    fontSize: 18.sp,
-                    fontWeight: FontWeight.w500,
-                    color: valueColor ??
-                        Theme.of(context).textTheme.bodyMedium?.color,
-                  ),
-            ),
-          ),
-        ),
-      ],
     );
   }
 }

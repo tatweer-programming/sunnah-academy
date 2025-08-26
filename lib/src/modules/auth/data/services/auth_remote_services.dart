@@ -17,7 +17,8 @@ class AuthRemoteServices {
       var response = await DioHelper.postData(
           path: EndPoints.register, data: creationForm.toJson());
       var authInfo = AuthInfo.fromJson(response.data);
-      var student = Student.fromJson(response.data['user']);
+      var student =
+          Student.fromJson(response.data['user'] ?? response.data['data']);
       return Right(tuple2(student, authInfo));
     } on Exception catch (e) {
       return Left(_classifyException(e));
@@ -32,7 +33,8 @@ class AuthRemoteServices {
         "password": password,
       });
       var authInfo = AuthInfo.fromJson(response.data);
-      var student = Student.fromJson(response.data['data']);
+      var student =
+          Student.fromJson(response.data['user'] ?? response.data['data']);
       return Right(tuple2(student, authInfo));
     } on Exception catch (e) {
       return Left(_classifyException(e));
