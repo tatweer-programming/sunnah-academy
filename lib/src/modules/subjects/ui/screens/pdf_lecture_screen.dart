@@ -46,7 +46,7 @@ class _PdfLectureScreenState extends State<PdfLectureScreen> {
       ExamCondition examCondition =
           widget.lecture.completionCondition as ExamCondition;
       context.push(ExamScreen(
-        examId: examCondition.examId,
+        examCondition: examCondition,
       ));
     } else {
       context

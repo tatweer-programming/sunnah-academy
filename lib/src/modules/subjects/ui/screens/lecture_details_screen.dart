@@ -4,8 +4,6 @@ import 'package:sizer/sizer.dart';
 import 'package:sunnah_academy/src/core/routing/navigation_manager.dart';
 import 'package:sunnah_academy/src/modules/exam/cubit/exam_cubit.dart';
 import 'package:sunnah_academy/src/modules/subjects/cubit/subjects_cubit.dart';
-import 'package:sunnah_academy/src/modules/subjects/data/models/completion_condition/completion_condition.dart';
-import 'package:sunnah_academy/src/modules/subjects/data/models/completion_condition/exam_condition.dart';
 import 'package:sunnah_academy/src/modules/subjects/ui/screens/pdf_lecture_screen.dart';
 import 'package:sunnah_academy/src/modules/subjects/ui/screens/video_lecture_screen.dart';
 
@@ -58,18 +56,8 @@ class LectureDetailScreen extends StatelessWidget {
           children: [
             BlocListener<ExamCubit, ExamState>(
               listener: (context, state) {
-                if (state is ExamPassed) {
-                  CompletionCondition? completionCondition =
-                      lecture.completionCondition;
-                  if (completionCondition is ExamCondition) {
-                    if (completionCondition.examId == state.examId) {
-                      context
-                          .read<SubjectsCubit>()
-                          .markLectureAsCompleted(lectureId: lecture.id);
-                      context.pop();
-                    }
-                  }
-                }
+                // TODO: Handle exam success state
+                // call markLectureAsCompleted ya shafra
               },
               child: BlocListener<SubjectsCubit, SubjectsState>(
                 listener: (context, state) {

@@ -103,7 +103,7 @@ class _VideoLectureScreenState extends State<VideoLectureScreen> {
       ExamCondition examCondition =
           widget.lecture.completionCondition as ExamCondition;
       context.push(ExamScreen(
-        examId: examCondition.examId,
+        examCondition: examCondition,
       ));
     } else {
       context

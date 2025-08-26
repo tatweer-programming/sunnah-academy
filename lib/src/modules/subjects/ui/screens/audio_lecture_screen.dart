@@ -128,7 +128,7 @@ class _AudioLectureScreenState extends State<AudioLectureScreen> {
       ExamCondition examCondition =
           widget.lecture.completionCondition as ExamCondition;
       context.push(ExamScreen(
-        examId: examCondition.examId,
+        examCondition: examCondition,
       ));
     } else {
       context
